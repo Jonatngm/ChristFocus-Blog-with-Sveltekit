@@ -1,14 +1,15 @@
-# TheTruthHub - Technical Documentation
+# ChristFocus - Technical Documentation
 
-A Christocentric blog platform created by Robert using modern web technologies.
+A Christ-centered blog platform created by Robert Ngemanyi Kabangu using modern web technologies. Features an elegant black/white/gold design with interactive components.
 
 ## 🏗️ Tech Stack
 
-- **SvelteKit** - Full-stack framework with SSR
+- **SvelteKit 2.0.0** - Full-stack framework with SSR and file-based routing
 - **TypeScript** - Type-safe development
-- **Supabase** - PostgreSQL database and authentication
-- **Tailwind CSS** - Utility-first styling
-- **Svelte Stores** - Reactive state management
+- **Supabase 2.51.0** - PostgreSQL database, authentication, and storage
+- **Tailwind CSS** - Custom utility-first styling with theme
+- **Svelte Stores** - Reactive state management (authStore)
+- **Lucide Svelte** - Beautiful icon library
 
 ## 📂 Project Structure
 
@@ -111,43 +112,83 @@ The project uses Supabase PostgreSQL with the following main tables:
 - `post_categories` - Many-to-many relationship
 - `post_tags` - Many-to-many relationship
 
-## 🎨 Styling
+## 🎨 Styling & Theme
 
-- **Tailwind CSS** for utility classes
-- **Custom theme** with CSS variables in [app.css](src/app.css)
-- **Typography plugin** for rich text content
-- **Dark mode support** via mode-watcher
+ChristFocus uses a custom black/white/gold color scheme:
+
+### Color Palette
+- **Primary Gold**: `43 70% 45%` (muted gold for accents)
+- **Background**: `0 0% 100%` (pure white)
+- **Foreground**: `0 0% 0%` (pure black)
+- **Custom Gold Shades**:
+  - `--gold`: `#B8860B` (darker gold)
+  - `--gold-dark`: `#8B6914` (darkest)
+  - `--gold-light`: `#D4AF37` (lighter)
+
+### Features
+- **Tailwind CSS** with custom utility classes
+- **CSS Variables** for theming in [app.css](src/app.css)
+- **Typography Plugin** for rich text content
+- **Responsive Design** for all screen sizes
+- **Smooth Animations** with Svelte transitions (slide, quintOut easing)
 
 ## 📱 Pages
 
-- `/` - Home page with featured and latest posts
-- `/about` - About page
-- `/contact` - Contact information
-- `/login` - Admin login
-- `/post/[id]` - Individual post page
-- `/admin` - Admin dashboard (protected)
-- `/admin/write` - Create new post (protected)
-- `/admin/edit/[id]` - Edit post (protected)
+- `/` - Home page with hero image, welcome section, and posts
+- `/about` - **Interactive About page** with expandable cards (Mission & Author)
+- `/contact` - Contact information with author details
+- `/login` - Admin login with OTP authentication
+- `/post/[id]` - Individual post page with full content
+- `/admin` - Admin dashboard with post management (protected)
+- `/admin/write` - Create new post with rich editor (protected)
+- `/admin/edit/[id]` - Edit existing post (protected)
 
-## 🚧 TODO
+### Interactive Features
 
-- [ ] Complete TipTap rich text editor integration
-- [ ] Implement search functionality
-- [ ] Add category/tag/series filtering
-- [ ] Complete admin edit post page
-- [ ] Add image upload functionality
-- [ ] Implement post scheduling
-- [ ] Add pagination for posts
-- [ ] Improve loading states
-- [ ] Add error boundaries
-- [ ] Complete UI components migration
+The About page features:
+- **Expandable Cards**: Click to reveal/hide content
+- **Smooth Transitions**: Svelte slide animations (400ms)
+- **Rotating Icons**: ChevronDown icons that rotate on expand
+- **Hover Effects**: Border color changes and shadow increases
+- **Responsive Design**: Works beautifully on all devices
+
+## ✅ Completed Features
+
+- [x] Black/white/gold color theme
+- [x] Interactive About page with expandable cards
+- [x] Professional header with navigation
+- [x] Elegant footer with Bible verse
+- [x] Hero section with full-screen image
+- [x] Welcome section on homepage
+- [x] Post cards with hover effects
+- [x] Admin dashboard with styled table
+- [x] Contact page with author information
+- [x] Responsive design across all pages
+
+## 🚧 Future Enhancements
+
+- [ ] Advanced search with filters
+- [ ] Category/tag/series filtering on homepage
+- [ ] Image upload for featured images
+- [ ] Post scheduling for future publication
+- [ ] Pagination for large post collections
+- [ ] Comments system
+- [ ] Social sharing buttons
+- [ ] Reading time estimates
+- [ ] Related posts suggestions
 
 ## 📄 License
 
-All rights reserved © Emmanuel Victor Mucyo
+All rights reserved © Robert Ngemanyi Kabangu, 2026
 
 ## 🙏 Credits
 
-Built with love using SvelteKit, TypeScript, and Supabase.
+Built with faith and dedication using SvelteKit, TypeScript, and Supabase.
 
-*"I am the way, the truth, and the life" - John 14:6*
+**Author**: Robert Ngemanyi Kabangu  
+**Email**: ngemanyir@gmail.com  
+**Location**: Kigali, Rwanda
+
+---
+
+*"The Lord sets the captives free." - Psalm 146:7*

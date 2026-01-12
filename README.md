@@ -1,15 +1,18 @@
-# TheTruthHub
+# ChristFocus
 
-A modern Christocentric blog platform built by Robert using SvelteKit, TypeScript, and Supabase.
+A Christ-centered blog platform built by Robert Ngemanyi with SvelteKit, TypeScript, and Supabase. Features an elegant black, white, and gold design inspired by faith and clarity.
 
-## 🚀 Features
+## ✨ Features
 
-- **SvelteKit** - Full-stack framework with SSR
+- **SvelteKit 2.0** - Modern full-stack framework with SSR
 - **TypeScript** - Type-safe development
-- **Supabase** - Backend authentication and database
-- **Tailwind CSS** - Modern styling
-- **Admin Panel** - Content management system
-- **Secure Authentication** - OTP-based login
+- **Supabase** - PostgreSQL database, authentication, and storage
+- **Tailwind CSS** - Custom black/white/gold theme
+- **Interactive UI** - Expandable cards with smooth animations
+- **Admin Dashboard** - Complete content management system
+- **Secure Authentication** - OTP-based email login
+- **Categories & Tags** - Organized content with series support
+- **Rich Text Editor** - Beautiful post creation experience
 
 ## 🛠️ Quick Start
 
@@ -31,16 +34,31 @@ A modern Christocentric blog platform built by Robert using SvelteKit, TypeScrip
    ```
    Open `http://localhost:8080`
 
+## 🎨 Design
+
+ChristFocus features an elegant color scheme:
+- **Primary Gold**: Muted golden yellow (#B8860B) for accents
+- **Background**: Pure white for clarity
+- **Text**: Black for strong readability
+- **Interactive Elements**: Smooth transitions and hover effects
+
 ## 📝 Commands
 
-- `npm run dev` - Start dev server
+- `npm run dev` - Start development server (port 5173)
 - `npm run build` - Build for production
 - `npm run preview` - Preview production build
+- `npm run lint` - Run ESLint
 
 ## 📄 License
 
-All rights reserved © Robert
+All rights reserved © Robert Ngemanyi Kabangu, 2026
+
+## 📍 Contact
+
+- **Author**: Robert Ngemanyi Kabangu
+- **Email**: ngemanyir@gmail.com
+- **Location**: Kigali, Rwanda
 
 ---
 
-*"I am the way, the truth, and the life" - John 14:6*
+*"The Lord sets the captives free." - Psalm 146:7*
