@@ -28,7 +28,7 @@
 
 		<div class="space-y-10">
 			<!-- Our Mission Card -->
-			<section class="reveal">
+			<section>
 				<button
 					on:click={toggleMission}
 					class="w-full flex items-start gap-6 bg-gradient-to-br from-gray-50 via-white to-gray-50 p-10 rounded-2xl border-2 border-gray-200 hover:border-primary transition-all duration-500 hover:shadow-2xl cursor-pointer group text-left interactive"
@@ -71,7 +71,7 @@
 			</section>
 
 			<!-- About the Author Card -->
-			<section class="reveal">
+			<section>
 				<button
 					on:click={toggleAuthor}
 					class="w-full flex items-start gap-6 bg-gradient-to-br from-gray-900 via-black to-gray-900 text-white p-10 rounded-2xl border-2 border-gray-800 hover:border-primary transition-all duration-500 hover:shadow-2xl cursor-pointer group text-left interactive"
@@ -113,7 +113,7 @@
 			</section>
 
 			<!-- Bible Verse Section -->
-			<section class="text-center py-16 mt-16 rounded-2xl border-2 border-primary bg-gradient-to-br from-primary/5 via-white to-primary/5 shadow-lg reveal">
+		<section class="text-center py-16 mt-16 rounded-2xl border-2 border-primary bg-gradient-to-br from-primary/5 via-white to-primary/5 shadow-lg">
 			<blockquote class="text-2xl md:text-3xl font-light text-black italic mb-6 px-6 leading-relaxed">
 					"Jesus came to bring freedom to those who are bound, healing to the brokenhearted, and hope to all who are lost. In His name, every chain is broken, every fear is cast out, and every soul finds true peace and eternal life."
 				</blockquote>

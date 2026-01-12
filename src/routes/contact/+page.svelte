@@ -13,7 +13,7 @@
 		</h1>
 		<div class="h-1.5 w-32 bg-gradient-to-r from-transparent via-primary to-transparent mx-auto mb-16"></div>
 
-		<div class="bg-gradient-to-br from-gray-900 via-black to-gray-900 text-white p-12 rounded-2xl shadow-2xl border-t-4 border-primary reveal interactive elevated">
+		<div class="bg-gradient-to-br from-gray-900 via-black to-gray-900 text-white p-12 rounded-2xl shadow-2xl border-t-4 border-primary interactive elevated">
 			<div class="flex items-center gap-5 mb-10">
 				<div class="p-4 rounded-xl bg-primary/20">
 					<Mail class="w-9 h-9 text-primary" />
@@ -56,7 +56,7 @@
 		</div>
 
 		<!-- Bible Verse -->
-		<div class="mt-16 text-center reveal">
+		<div class="mt-16 text-center">
 			<div class="bg-gradient-to-br from-gray-50 via-white to-gray-50 p-10 rounded-2xl border-2 border-primary shadow-xl">
 				<p class="text-xl md:text-2xl text-gray-900 leading-relaxed italic mb-6">
 					"For God did not send His Son into the world to condemn the world, but to save it. In Him, the captives are set free, the broken are healed, and all who come to Him find eternal life and peace."

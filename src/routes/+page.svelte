@@ -53,7 +53,7 @@
 
 	<div class="container mx-auto px-4 py-20 md:py-32">
 		<!-- Welcome Text Section -->
-		<div class="mb-20 text-center max-w-4xl mx-auto reveal">
+		<div class="mb-20 text-center max-w-4xl mx-auto">
 			<h2 class="text-4xl md:text-6xl font-extrabold text-black mb-10 tracking-tight">
 				Welcome to <span class="text-primary text-shadow-soft">ChristFocus</span>
 			</h2>
@@ -64,7 +64,7 @@
 		</div>
 
 		<!-- Search Bar -->
-		<div class="mb-20 max-w-2xl mx-auto reveal">
+		<div class="mb-20 max-w-2xl mx-auto">
 			<div class="relative group">
 				<Search class="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 group-focus-within:text-primary transition-colors" />
 				<input
@@ -88,7 +88,7 @@
 		{:else}
 			<!-- Featured Posts -->
 			{#if featuredPosts.length > 0 && !searchQuery}
-				<section class="mb-32 reveal">
+				<section class="mb-32">
 					<div class="flex items-center gap-6 mb-16">
 						<div class="h-1.5 w-20 bg-gradient-to-r from-primary to-gold-dark rounded-full"></div>
 						<h2 class="text-4xl md:text-5xl font-extrabold text-black flex items-center gap-4 tracking-tight">
@@ -107,7 +107,7 @@
 			{/if}
 
 			<!-- All Posts -->
-			<section class="reveal">
+			<section>
 				<div class="flex items-center gap-6 mb-16">
 					<div class="h-1.5 w-20 bg-gradient-to-r from-primary to-gold-dark rounded-full"></div>
 					<h2 class="text-4xl md:text-5xl font-extrabold text-black tracking-tight">
