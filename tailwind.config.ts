@@ -39,6 +39,11 @@ export default {
           DEFAULT: 'hsl(var(--popover))',
           foreground: 'hsl(var(--popover-foreground))',
         },
+        'gold': 'hsl(var(--gold))',
+        'gold-dark': 'hsl(var(--gold-dark))',
+        'gold-medium': 'hsl(var(--gold-medium))',
+        'gold-light': 'hsl(var(--gold-light))',
+        'gold-subtle': 'hsl(var(--gold-subtle))',
       },
       borderRadius: {
         lg: 'var(--radius)',
@@ -51,5 +56,5 @@ export default {
       },
     },
   },
-  plugins: [],
+  plugins: [require('@tailwindcss/typography')],
 } satisfies Config;

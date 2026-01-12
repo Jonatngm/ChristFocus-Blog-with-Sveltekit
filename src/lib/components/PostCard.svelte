@@ -41,13 +41,13 @@
 			{/if}
 
 			<div class="flex items-start justify-between mb-4">
-				<h3 class="text-2xl font-extrabold text-foreground leading-tight line-clamp-2 tracking-tight group-hover:text-primary transition-colors duration-300">
+				<h3 class="text-2xl font-extrabold text-black leading-tight line-clamp-2 tracking-tight group-hover:text-primary transition-colors duration-300">
 					{post.title}
 				</h3>
 
 				{#if typeof post.views !== 'undefined'}
 					<div class="ml-4 flex-shrink-0">
-						<div class="inline-flex items-center gap-2 bg-gradient-to-r from-primary/20 to-gold-dark/20 text-foreground px-3 py-1.5 rounded-full border border-primary/30 shadow-sm">
+						<div class="inline-flex items-center gap-2 bg-gradient-to-r from-primary/20 to-gold-dark/20 text-black px-3 py-1.5 rounded-full border border-primary/30 shadow-sm">
 							<Eye class="w-4 h-4" />
 							<span class="text-sm font-bold">{formatCount(post.views)}</span>
 						</div>

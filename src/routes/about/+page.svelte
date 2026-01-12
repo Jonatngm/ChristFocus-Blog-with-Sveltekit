@@ -21,7 +21,7 @@
 
 <div class="min-h-screen bg-white">
 	<div class="container mx-auto px-4 py-20 max-w-5xl">
-		<h1 class="text-5xl md:text-7xl font-extrabold text-foreground mb-8 text-center tracking-tight">
+		<h1 class="text-5xl md:text-7xl font-extrabold text-black mb-8 text-center tracking-tight">
 			About <span class="text-primary text-shadow-soft">ChristFocus</span>
 		</h1>
 		<div class="h-1.5 w-32 bg-gradient-to-r from-transparent via-primary to-transparent mx-auto mb-20"></div>
@@ -38,7 +38,7 @@
 					</div>
 					<div class="flex-1">
 						<div class="flex items-center justify-between mb-3">
-							<h2 class="text-3xl md:text-4xl font-extrabold text-foreground group-hover:text-primary transition-colors duration-300 tracking-tight">
+							<h2 class="text-3xl md:text-4xl font-extrabold text-black group-hover:text-primary transition-colors duration-300 tracking-tight">
 								Our Mission
 							</h2>
 							<ChevronDown 

@@ -54,11 +54,11 @@
 	<div class="container mx-auto px-4 py-20 md:py-32">
 		<!-- Welcome Text Section -->
 		<div class="mb-20 text-center max-w-4xl mx-auto reveal">
-			<h2 class="text-4xl md:text-6xl font-extrabold text-foreground mb-10 tracking-tight">
+			<h2 class="text-4xl md:text-6xl font-extrabold text-black mb-10 tracking-tight">
 				Welcome to <span class="text-primary text-shadow-soft">ChristFocus</span>
 			</h2>
 			<div class="h-1 w-24 bg-gradient-to-r from-transparent via-primary to-transparent mx-auto mb-10"></div>
-			<p class="text-xl md:text-2xl text-gray-700 leading-relaxed font-medium">
+			<p class="text-xl md:text-2xl text-gray-800 leading-relaxed font-medium">
 				ChristFocus is a Christ-centered space created to reveal the glory and presence of Jesus in every part of life. Here we proclaim the Gospel of Love, words that restore your soul, bring lasting peace, and give life a whole new depth and meaning. Through the wisdom and truth of Christ, you will find unwavering hope, victory over life's struggles, and the assurance of eternal triumph. Come, be encouraged, and let your heart be anchored in His love and light.
 			</p>
 		</div>
@@ -71,7 +71,7 @@
 					type="text"
 					bind:value={searchQuery}
 					placeholder="Search teachings..."
-					class="w-full pl-14 pr-6 py-5 border-2 border-gray-200 rounded-xl bg-white text-foreground placeholder:text-gray-400 focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all duration-300 outline-none shadow-sm hover:shadow-md text-lg"
+					class="w-full pl-14 pr-6 py-5 border-2 border-gray-200 rounded-xl bg-white text-black placeholder:text-gray-400 focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all duration-300 outline-none shadow-sm hover:shadow-md text-lg"
 				/>
 			</div>
 		</div>
@@ -91,7 +91,7 @@
 				<section class="mb-32 reveal">
 					<div class="flex items-center gap-6 mb-16">
 						<div class="h-1.5 w-20 bg-gradient-to-r from-primary to-gold-dark rounded-full"></div>
-						<h2 class="text-4xl md:text-5xl font-extrabold text-foreground flex items-center gap-4 tracking-tight">
+						<h2 class="text-4xl md:text-5xl font-extrabold text-black flex items-center gap-4 tracking-tight">
 							<div class="p-3 rounded-xl bg-gradient-to-br from-primary/10 to-gold-dark/10">
 								<BookOpen class="w-10 h-10 text-primary" />
 							</div>
@@ -110,7 +110,7 @@
 			<section class="reveal">
 				<div class="flex items-center gap-6 mb-16">
 					<div class="h-1.5 w-20 bg-gradient-to-r from-primary to-gold-dark rounded-full"></div>
-					<h2 class="text-4xl md:text-5xl font-extrabold text-foreground tracking-tight">
+					<h2 class="text-4xl md:text-5xl font-extrabold text-black tracking-tight">
 						{searchQuery ? 'Search Results' : 'Latest Posts'}
 					</h2>
 				</div>

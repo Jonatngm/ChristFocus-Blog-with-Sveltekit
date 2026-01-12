@@ -74,7 +74,7 @@
 					<Cross class="w-12 h-12 text-black" />
 				</div>
 			</div>
-			<h1 class="text-4xl font-extrabold text-foreground tracking-tight">Admin Access</h1>
+			<h1 class="text-4xl font-extrabold text-black tracking-tight">Admin Access</h1>
 			<p class="text-base text-gray-600 font-medium">
 				{step === 'login' ? 'Sign in to manage content' : step === 'register' ? 'Create your account' : 'Enter verification code'}
 			</p>
@@ -84,25 +84,25 @@
 			{#if step === 'login'}
 				<form on:submit={handleLogin} class="space-y-7">
 					<div class="space-y-3">
-						<label for="email" class="text-sm font-bold text-foreground uppercase tracking-wide">Email</label>
+						<label for="email" class="text-sm font-bold text-black uppercase tracking-wide">Email</label>
 						<input
 							id="email"
 							type="email"
 							bind:value={email}
 							required
-							class="w-full px-5 py-4 border-2 border-gray-200 rounded-xl bg-white text-foreground placeholder:text-gray-400 focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all duration-300 outline-none disabled:opacity-50 disabled:cursor-not-allowed hover:border-gray-300 text-lg"
+							class="w-full px-5 py-4 border-2 border-gray-200 rounded-xl bg-white text-black placeholder:text-gray-400 focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all duration-300 outline-none disabled:opacity-50 disabled:cursor-not-allowed hover:border-gray-300 text-lg"
 							placeholder="your@email.com"
 							disabled={loading}
 						/>
 					</div>
 					<div class="space-y-3">
-						<label for="password" class="text-sm font-bold text-foreground uppercase tracking-wide">Password</label>
+						<label for="password" class="text-sm font-bold text-black uppercase tracking-wide">Password</label>
 						<input
 							id="password"
 							type="password"
 							bind:value={password}
 							required
-							class="w-full px-5 py-4 border-2 border-gray-200 rounded-xl bg-white text-foreground placeholder:text-gray-400 focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all duration-300 outline-none disabled:opacity-50 disabled:cursor-not-allowed hover:border-gray-300 text-lg"
+							class="w-full px-5 py-4 border-2 border-gray-200 rounded-xl bg-white text-black placeholder:text-gray-400 focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all duration-300 outline-none disabled:opacity-50 disabled:cursor-not-allowed hover:border-gray-300 text-lg"
 							placeholder="••••••••"
 							disabled={loading}
 						/>
@@ -129,7 +129,7 @@
 							type="email"
 							bind:value={email}
 							required
-							class="w-full px-5 py-4 border-2 border-gray-200 rounded-xl bg-white text-foreground placeholder:text-gray-400 focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all duration-300 outline-none disabled:opacity-50 disabled:cursor-not-allowed hover:border-gray-300 text-lg"
+							class="w-full px-5 py-4 border-2 border-gray-200 rounded-xl bg-white text-black placeholder:text-gray-400 focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all duration-300 outline-none disabled:opacity-50 disabled:cursor-not-allowed hover:border-gray-300 text-lg"
 							placeholder="your@email.com"
 							disabled={loading}
 						/>
@@ -150,37 +150,37 @@
 			{:else}
 				<form on:submit={handleRegister} class="space-y-6">
 					<div class="space-y-3">
-						<label for="username" class="text-sm font-bold text-foreground uppercase tracking-wide">Username</label>
+						<label for="username" class="text-sm font-bold text-black uppercase tracking-wide">Username</label>
 						<input
 							id="username"
 							type="text"
 							bind:value={username}
 							required
-							class="w-full px-5 py-4 border-2 border-gray-200 rounded-xl bg-white text-foreground placeholder:text-gray-400 focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all duration-300 outline-none disabled:opacity-50 disabled:cursor-not-allowed hover:border-gray-300 text-lg"
+							class="w-full px-5 py-4 border-2 border-gray-200 rounded-xl bg-white text-black placeholder:text-gray-400 focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all duration-300 outline-none disabled:opacity-50 disabled:cursor-not-allowed hover:border-gray-300 text-lg"
 							placeholder="username"
 							disabled={loading}
 						/>
 					</div>
 					<div class="space-y-3">
-						<label for="otp-code" class="text-sm font-bold text-foreground uppercase tracking-wide">Verification Code</label>
+						<label for="otp-code" class="text-sm font-bold text-black uppercase tracking-wide">Verification Code</label>
 						<input
 							id="otp-code"
 							type="text"
 							bind:value={otp}
 							required
-							class="w-full px-5 py-4 border-2 border-gray-200 rounded-xl bg-white text-foreground placeholder:text-gray-400 focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all duration-300 outline-none disabled:opacity-50 disabled:cursor-not-allowed hover:border-gray-300 text-lg"
+							class="w-full px-5 py-4 border-2 border-gray-200 rounded-xl bg-white text-black placeholder:text-gray-400 focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all duration-300 outline-none disabled:opacity-50 disabled:cursor-not-allowed hover:border-gray-300 text-lg"
 							placeholder="123456"
 							disabled={loading}
 						/>
 					</div>
 					<div class="space-y-3">
-						<label for="new-password" class="text-sm font-bold text-foreground uppercase tracking-wide">Password</label>
+						<label for="new-password" class="text-sm font-bold text-black uppercase tracking-wide">Password</label>
 						<input
 							id="new-password"
 							type="password"
 							bind:value={password}
 							required
-							class="w-full px-5 py-4 border-2 border-gray-200 rounded-xl bg-white text-foreground placeholder:text-gray-400 focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all duration-300 outline-none disabled:opacity-50 disabled:cursor-not-allowed hover:border-gray-300 text-lg"
+							class="w-full px-5 py-4 border-2 border-gray-200 rounded-xl bg-white text-black placeholder:text-gray-400 focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all duration-300 outline-none disabled:opacity-50 disabled:cursor-not-allowed hover:border-gray-300 text-lg"
 							placeholder="••••••••"
 							disabled={loading}
 						/>

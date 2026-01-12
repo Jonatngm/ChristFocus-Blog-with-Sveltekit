@@ -8,7 +8,7 @@
 
 <div class="min-h-screen bg-white">
 	<div class="container mx-auto px-4 py-20 max-w-3xl">
-		<h1 class="text-5xl md:text-7xl font-extrabold text-foreground mb-8 text-center tracking-tight">
+		<h1 class="text-5xl md:text-7xl font-extrabold text-black mb-8 text-center tracking-tight">
 			Contact <span class="text-primary text-shadow-soft">Us</span>
 		</h1>
 		<div class="h-1.5 w-32 bg-gradient-to-r from-transparent via-primary to-transparent mx-auto mb-16"></div>
@@ -58,7 +58,7 @@
 		<!-- Bible Verse -->
 		<div class="mt-16 text-center reveal">
 			<div class="bg-gradient-to-br from-gray-50 via-white to-gray-50 p-10 rounded-2xl border-2 border-primary shadow-xl">
-				<p class="text-xl md:text-2xl text-foreground leading-relaxed italic mb-6">
+				<p class="text-xl md:text-2xl text-gray-900 leading-relaxed italic mb-6">
 					"For God did not send His Son into the world to condemn the world, but to save it. In Him, the captives are set free, the broken are healed, and all who come to Him find eternal life and peace."
 				</p>
 				<div class="h-1 w-24 bg-gradient-to-r from-transparent via-primary to-transparent mx-auto mb-4"></div>

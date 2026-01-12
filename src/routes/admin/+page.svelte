@@ -63,7 +63,7 @@
 	<div class="container mx-auto px-4 py-12">
 		<div class="flex items-center justify-between mb-12 pb-8 border-b-2 border-primary">
 			<div>
-				<h1 class="text-5xl font-extrabold text-foreground mb-2 tracking-tight">Admin <span class="text-primary text-shadow-soft">Dashboard</span></h1>
+				<h1 class="text-5xl font-extrabold text-black mb-2 tracking-tight">Admin <span class="text-primary text-shadow-soft">Dashboard</span></h1>
 				<p class="text-gray-600 text-lg">Manage your teachings and content</p>
 			</div>
 			<a href="/admin/write">
@@ -82,7 +82,7 @@
 					type="text"
 					bind:value={searchQuery}
 					placeholder="Search teachings..."
-					class="w-full pl-12 pr-4 py-4 border-2 border-gray-200 rounded-xl bg-white text-foreground placeholder:text-gray-400 focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all duration-300 outline-none hover:border-gray-300 text-lg"
+					class="w-full pl-12 pr-4 py-4 border-2 border-gray-200 rounded-xl bg-white text-black placeholder:text-gray-400 focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all duration-300 outline-none hover:border-gray-300 text-lg"
 				/>
 			</div>
 		</div>
@@ -112,7 +112,7 @@
 						<tbody>
 							{#each filteredPosts as post, i}
 								<tr class="border-b last:border-b-0 hover:bg-gradient-to-r hover:from-primary/5 hover:to-transparent transition-all duration-300 {i % 2 === 0 ? 'bg-white' : 'bg-gray-50/50'}">
-									<td class="p-5 font-bold text-foreground text-base">{post.title}</td>
+									<td class="p-5 font-bold text-black text-base">{post.title}</td>
 									<td class="p-5">
 										<span class="px-4 py-2 rounded-full text-sm font-bold shadow-sm {post.published ? 'bg-gradient-to-r from-primary to-gold-dark text-black' : 'bg-gray-200 text-gray-700'}">
 											{post.published ? 'Published' : 'Draft'}
