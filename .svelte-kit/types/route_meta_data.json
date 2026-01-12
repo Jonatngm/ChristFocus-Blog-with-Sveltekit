@@ -1,0 +1,10 @@
+{
+	"/": [],
+	"/about": [],
+	"/admin": [],
+	"/admin/edit/[id]": [],
+	"/admin/write": [],
+	"/contact": [],
+	"/login": [],
+	"/post/[id]": []
+}
