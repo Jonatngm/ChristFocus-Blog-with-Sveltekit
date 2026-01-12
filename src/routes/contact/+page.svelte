@@ -7,48 +7,62 @@
 </svelte:head>
 
 <div class="min-h-screen bg-white">
-	<div class="container mx-auto px-4 py-16 max-w-2xl">
-		<h1 class="text-5xl md:text-6xl font-bold text-black mb-12 text-center">
-			Contact <span class="text-primary">Us</span>
+	<div class="container mx-auto px-4 py-20 max-w-3xl">
+		<h1 class="text-5xl md:text-7xl font-extrabold text-foreground mb-8 text-center tracking-tight">
+			Contact <span class="text-primary text-shadow-soft">Us</span>
 		</h1>
+		<div class="h-1.5 w-32 bg-gradient-to-r from-transparent via-primary to-transparent mx-auto mb-16"></div>
 
-		<div class="bg-gradient-to-br from-gray-900 to-black text-white p-10 rounded-lg shadow-2xl border-t-4 border-primary">
-			<div class="flex items-center gap-4 mb-8">
-				<Mail class="w-8 h-8 text-primary" />
-				<h2 class="text-2xl font-bold">Get in Touch</h2>
+		<div class="bg-gradient-to-br from-gray-900 via-black to-gray-900 text-white p-12 rounded-2xl shadow-2xl border-t-4 border-primary reveal interactive elevated">
+			<div class="flex items-center gap-5 mb-10">
+				<div class="p-4 rounded-xl bg-primary/20">
+					<Mail class="w-9 h-9 text-primary" />
+				</div>
+				<h2 class="text-3xl font-extrabold tracking-tight">Get in Touch</h2>
 			</div>
 			
-			<p class="text-gray-300 leading-relaxed mb-8 text-lg">
-				Have questions or want to connect? Feel free to reach out to us.
+			<p class="text-gray-300 leading-relaxed mb-10 text-lg">
+				Have questions or want to connect? Feel free to reach out to us. We'd love to hear from you.
 			</p>
 			
 			<div class="space-y-6">
-				<div class="bg-white/10 p-6 rounded-lg backdrop-blur-sm">
-					<p class="text-sm text-primary font-semibold mb-2">Name</p>
-					<p class="text-white text-lg">Robert Ngemanyi Kabangu</p>
+				<div class="bg-white/10 backdrop-blur-sm p-7 rounded-xl border border-white/20 hover:bg-white/15 transition-all duration-300 group">
+					<div class="flex items-center gap-3 mb-3">
+						<User class="w-5 h-5 text-primary" />
+						<p class="text-sm text-primary font-bold uppercase tracking-wide">Name</p>
+					</div>
+					<p class="text-white text-xl font-semibold">Robert Ngemanyi Kabangu</p>
 				</div>
 
-				<div class="bg-white/10 p-6 rounded-lg backdrop-blur-sm">
-					<p class="text-sm text-primary font-semibold mb-2">Email</p>
-					<a href="mailto:ngemanyir@gmail.com" class="text-white text-lg hover:text-primary transition-colors">
+				<div class="bg-white/10 backdrop-blur-sm p-7 rounded-xl border border-white/20 hover:bg-white/15 transition-all duration-300 group">
+					<div class="flex items-center gap-3 mb-3">
+						<Mail class="w-5 h-5 text-primary" />
+						<p class="text-sm text-primary font-bold uppercase tracking-wide">Email</p>
+					</div>
+					<a href="mailto:ngemanyir@gmail.com" class="text-white text-xl font-semibold hover:text-primary transition-colors inline-flex items-center gap-2 group">
 						ngemanyir@gmail.com
+						<span class="opacity-0 group-hover:opacity-100 transition-opacity">→</span>
 					</a>
 				</div>
 
-				<div class="bg-white/10 p-6 rounded-lg backdrop-blur-sm">
-					<p class="text-sm text-primary font-semibold mb-2">Location</p>
-					<p class="text-white text-lg">Kigali, Rwanda</p>
+				<div class="bg-white/10 backdrop-blur-sm p-7 rounded-xl border border-white/20 hover:bg-white/15 transition-all duration-300 group">
+					<div class="flex items-center gap-3 mb-3">
+						<MapPin class="w-5 h-5 text-primary" />
+						<p class="text-sm text-primary font-bold uppercase tracking-wide">Location</p>
+					</div>
+					<p class="text-white text-xl font-semibold">Kigali, Rwanda</p>
 				</div>
 			</div>
 		</div>
 
 		<!-- Bible Verse -->
-		<div class="mt-12 text-center">
-			<div class="bg-gradient-to-br from-gray-50 to-white p-8 rounded-lg border-2 border-primary shadow-lg">
-				<p class="text-lg md:text-xl text-gray-900 leading-relaxed italic mb-4">
+		<div class="mt-16 text-center reveal">
+			<div class="bg-gradient-to-br from-gray-50 via-white to-gray-50 p-10 rounded-2xl border-2 border-primary shadow-xl">
+				<p class="text-xl md:text-2xl text-foreground leading-relaxed italic mb-6">
 					"For God did not send His Son into the world to condemn the world, but to save it. In Him, the captives are set free, the broken are healed, and all who come to Him find eternal life and peace."
 				</p>
-				<p class="text-gray-600 font-semibold">— Adapted from John 3:17 & Luke 4:18</p>
+				<div class="h-1 w-24 bg-gradient-to-r from-transparent via-primary to-transparent mx-auto mb-4"></div>
+				<p class="text-gray-600 font-bold text-base">— Adapted from John 3:17 & Luke 4:18</p>
 			</div>
 		</div>
 	</div>
