@@ -114,7 +114,7 @@
 
 			<!-- Bible Verse Section -->
 			<section class="text-center py-16 mt-16 rounded-2xl border-2 border-primary bg-gradient-to-br from-primary/5 via-white to-primary/5 shadow-lg reveal">
-				<blockquote class="text-2xl md:text-3xl font-light text-foreground italic mb-6 px-6 leading-relaxed">
+			<blockquote class="text-2xl md:text-3xl font-light text-black italic mb-6 px-6 leading-relaxed">
 					"Jesus came to bring freedom to those who are bound, healing to the brokenhearted, and hope to all who are lost. In His name, every chain is broken, every fear is cast out, and every soul finds true peace and eternal life."
 				</blockquote>
 				<div class="h-1 w-24 bg-gradient-to-r from-transparent via-primary to-transparent mx-auto mb-6"></div>
