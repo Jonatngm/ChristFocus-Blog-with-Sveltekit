@@ -1,1 +1,0 @@
-import{R as u,c as g,T as o,h as t,U as _,V as p,W as a,i as l,g as d,X as m}from"./Gv26lf99.js";function E(n,r){let s=null,f=t;var i;if(t){s=m;for(var e=_(document.head);e!==null&&(e.nodeType!==p||e.data!==n);)e=a(e);if(e===null)l(!1);else{var y=a(e);e.remove(),d(y)}}t||(i=document.head.appendChild(u()));try{g(()=>r(i),o)}finally{f&&(l(!0),d(s))}}export{E as h};
