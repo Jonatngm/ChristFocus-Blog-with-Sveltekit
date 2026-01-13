@@ -88,7 +88,6 @@ declare module '$env/static/private' {
 	export const ProgramFiles: string;
 	export const ProgramW6432: string;
 	export const PROMPT: string;
-	export const PSExecutionPolicyPreference: string;
 	export const PSModulePath: string;
 	export const PUBLIC: string;
 	export const SESSIONNAME: string;
@@ -204,7 +203,6 @@ declare module '$env/dynamic/private' {
 		ProgramFiles: string;
 		ProgramW6432: string;
 		PROMPT: string;
-		PSExecutionPolicyPreference: string;
 		PSModulePath: string;
 		PUBLIC: string;
 		SESSIONNAME: string;
