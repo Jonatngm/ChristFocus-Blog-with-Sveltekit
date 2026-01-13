@@ -140,51 +140,51 @@
 	<title>Write Post - ChristFocus</title>
 </svelte:head>
 
-<div class="min-h-screen bg-background">
-	<div class="container mx-auto px-4 py-8 max-w-4xl">
-		<div class="flex items-center justify-between mb-8">
-			<h1 class="text-3xl font-bold">Write New Teaching</h1>
+<div class="min-h-screen bg-white">
+	<div class="container mx-auto px-4 sm:px-6 py-6 sm:py-8 max-w-4xl">
+		<div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6 sm:mb-8">
+			<h1 class="text-2xl sm:text-3xl font-bold text-black">Write New Teaching</h1>
 			<a href="/admin">
-				<Button variant="outline">Cancel</Button>
+				<Button variant="outline" class="w-full sm:w-auto">Cancel</Button>
 			</a>
 		</div>
 
-		<form on:submit={handleSubmit} class="space-y-6">
-			<div class="bg-card p-6 rounded-lg border space-y-6">
+		<form on:submit={handleSubmit} class="space-y-5 sm:space-y-6">
+			<div class="bg-white p-4 sm:p-5 md:p-6 rounded-xl border-2 border-gray-200 space-y-5 sm:space-y-6 shadow-lg">
 				<!-- Title -->
 				<div class="space-y-2">
-					<label for="title" class="text-sm font-medium text-foreground">Title</label>
+					<label for="title" class="text-xs sm:text-sm font-bold text-black uppercase tracking-wide">Title</label>
 					<input
 						id="title"
 						type="text"
 						bind:value={title}
 						required
-						class="w-full px-4 py-3 border-2 border-input rounded-lg bg-background text-foreground placeholder:text-muted-foreground focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all outline-none"
+						class="w-full px-3 sm:px-4 py-2.5 sm:py-3 border-2 border-gray-200 rounded-xl bg-white text-black placeholder:text-gray-400 focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all outline-none text-sm sm:text-base"
 						placeholder="Enter your teaching title..."
 					/>
 				</div>
 
 				<!-- Content -->
 				<div class="space-y-2">
-					<label for="content" class="text-sm font-medium text-foreground">Content</label>
+					<label for="content" class="text-xs sm:text-sm font-bold text-black uppercase tracking-wide">Content</label>
 					<textarea
 						id="content"
 						bind:value={content}
 						required
-						rows="15"
-						class="w-full px-4 py-3 border-2 border-input rounded-lg bg-background text-foreground placeholder:text-muted-foreground focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all outline-none resize-y"
+						rows="12"
+						class="w-full px-3 sm:px-4 py-2.5 sm:py-3 border-2 border-gray-200 rounded-xl bg-white text-black placeholder:text-gray-400 focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all outline-none resize-y text-sm sm:text-base"
 						placeholder="Write your teaching content here..."
 					></textarea>
 				</div>
 
 				<!-- Excerpt -->
 				<div class="space-y-2">
-					<label for="excerpt" class="text-sm font-medium text-foreground">Excerpt (Optional)</label>
+					<label for="excerpt" class="text-xs sm:text-sm font-bold text-black uppercase tracking-wide">Excerpt (Optional)</label>
 					<textarea
 						id="excerpt"
 						bind:value={excerpt}
 						rows="3"
-						class="w-full px-4 py-3 border-2 border-input rounded-lg bg-background text-foreground placeholder:text-muted-foreground focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all outline-none resize-y"
+						class="w-full px-3 sm:px-4 py-2.5 sm:py-3 border-2 border-gray-200 rounded-xl bg-white text-black placeholder:text-gray-400 focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all outline-none resize-y text-sm sm:text-base"
 						placeholder="Brief summary for preview..."
 					></textarea>
 				</div>
@@ -238,17 +238,17 @@
 
 				<!-- Categories -->
 				<div class="space-y-2">
-					<div class="text-sm font-medium text-foreground">Categories</div>
-					<div class="grid grid-cols-2 gap-3">
+					<div class="text-xs sm:text-sm font-bold text-black uppercase tracking-wide">Categories</div>
+					<div class="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3">
 						{#each categories as category}
-							<label class="flex items-center space-x-2 cursor-pointer">
+							<label class="flex items-center space-x-2 cursor-pointer p-2 hover:bg-gray-50 rounded-lg transition-colors">
 								<input
 									type="checkbox"
 									bind:group={selectedCategories}
 									value={category.id}
-									class="w-4 h-4 rounded border-input text-primary focus:ring-2 focus:ring-primary/20"
+									class="w-4 h-4 rounded border-gray-300 text-primary focus:ring-2 focus:ring-primary/20"
 								/>
-								<span class="text-sm">{category.name}</span>
+								<span class="text-sm font-medium text-black">{category.name}</span>
 							</label>
 						{/each}
 					</div>
@@ -256,27 +256,27 @@
 
 				<!-- Tags -->
 				<div class="space-y-2">
-					<label for="tagInput" class="text-sm font-medium text-foreground">Tags</label>
-					<div class="flex gap-2">
+					<label for="tagInput" class="text-xs sm:text-sm font-bold text-black uppercase tracking-wide">Tags</label>
+					<div class="flex flex-col sm:flex-row gap-2">
 						<input
 							id="tagInput"
 							type="text"
 							bind:value={tagInput}
 							on:keydown={(e) => e.key === 'Enter' && (e.preventDefault(), addTag())}
-							class="flex-1 px-4 py-3 border-2 border-input rounded-lg bg-background text-foreground placeholder:text-muted-foreground focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all outline-none"
+							class="flex-1 px-3 sm:px-4 py-2.5 sm:py-3 border-2 border-gray-200 rounded-xl bg-white text-black placeholder:text-gray-400 focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all outline-none text-sm sm:text-base"
 							placeholder="Add tags..."
 						/>
-						<Button type="button" on:click={addTag}>Add</Button>
+						<Button type="button" on:click={addTag} class="w-full sm:w-auto">Add</Button>
 					</div>
 					{#if tags.length > 0}
 						<div class="flex flex-wrap gap-2 mt-3">
 							{#each tags as tag}
-								<span class="inline-flex items-center gap-1 px-3 py-1 bg-primary/10 text-primary rounded-full text-sm">
+								<span class="inline-flex items-center gap-1 px-2.5 sm:px-3 py-1 sm:py-1.5 bg-primary/10 text-primary rounded-full text-xs sm:text-sm font-semibold">
 									{tag}
 									<button
 										type="button"
 										on:click={() => removeTag(tag)}
-										class="hover:text-destructive"
+										class="hover:text-red-600 text-base sm:text-lg font-bold"
 									>
 										×
 									</button>
@@ -287,29 +287,29 @@
 				</div>
 
 				<!-- Options -->
-				<div class="space-y-3 pt-4 border-t">
-					<label class="flex items-center space-x-2 cursor-pointer">
+				<div class="space-y-3 pt-4 border-t-2 border-gray-200">
+					<label class="flex items-center space-x-2 sm:space-x-3 cursor-pointer p-2 hover:bg-gray-50 rounded-lg transition-colors">
 						<input
 							type="checkbox"
 							bind:checked={published}
-							class="w-4 h-4 rounded border-input text-primary focus:ring-2 focus:ring-primary/20"
+							class="w-4 h-4 sm:w-5 sm:h-5 rounded border-gray-300 text-primary focus:ring-2 focus:ring-primary/20"
 						/>
-						<span class="text-sm font-medium">Publish immediately</span>
+						<span class="text-sm sm:text-base font-bold text-black">Publish immediately</span>
 					</label>
-					<label class="flex items-center space-x-2 cursor-pointer">
+					<label class="flex items-center space-x-2 sm:space-x-3 cursor-pointer p-2 hover:bg-gray-50 rounded-lg transition-colors">
 						<input
 							type="checkbox"
 							bind:checked={featured}
-							class="w-4 h-4 rounded border-input text-primary focus:ring-2 focus:ring-primary/20"
+							class="w-4 h-4 sm:w-5 sm:h-5 rounded border-gray-300 text-primary focus:ring-2 focus:ring-primary/20"
 						/>
-						<span class="text-sm font-medium">Feature this post</span>
+						<span class="text-sm sm:text-base font-bold text-black">Feature this post</span>
 					</label>
 				</div>
 			</div>
 
 			<!-- Submit Button -->
-			<div class="flex justify-end gap-3">
-				<Button type="submit" disabled={loading || uploadingImage} class="min-w-[150px]">
+			<div class="flex flex-col sm:flex-row justify-end gap-3">
+				<Button type="submit" disabled={loading || uploadingImage} class="w-full sm:w-auto sm:min-w-[150px] bg-gradient-to-r from-primary to-gold-dark hover:from-gold-dark hover:to-primary text-black font-bold">
 					{uploadingImage ? 'Uploading Image...' : loading ? 'Creating...' : 'Create Teaching'}
 				</Button>
 			</div>
