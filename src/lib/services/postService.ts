@@ -88,35 +88,58 @@ class PostService {
     const anonId = opts?.anonId ?? null;
 
     try {
-      const { data: rpcData, error: rpcError } = await supabase.rpc('increment_unique_view', { p_post_id: id, p_user_id: userId, p_anon_id: anonId });
+      const { data: rpcData, error: rpcError } = await supabase.rpc('increment_unique_view', { 
+        p_post_id: id, 
+        p_user_id: userId, 
+        p_anon_id: anonId 
+      });
+      
       if (!rpcError && rpcData) {
+        console.log('View incremented successfully via RPC:', rpcData);
         if (Array.isArray(rpcData) && rpcData.length) return rpcData[0] as Post;
         return rpcData as Post;
       }
+      
+      if (rpcError) {
+        console.warn('RPC increment_unique_view error:', rpcError);
+      }
     } catch (e) {
-      // ignore rpc errors and fallback
+      console.warn('RPC call failed, using fallback:', e);
     }
 
-    // Fallback: avoid counting duplicates on client; do best-effort increment
-    const { data: current, error: selectError } = await supabase
-      .from<Post>('posts')
-      .select('views')
-      .eq('id', id)
-      .single();
+    // Fallback: simple increment without duplicate checking
+    try {
+      const { data: current, error: selectError } = await supabase
+        .from('posts')
+        .select('views')
+        .eq('id', id)
+        .single();
 
-    if (selectError || !current) return null;
+      if (selectError) {
+        console.error('Error fetching current views:', selectError);
+        return null;
+      }
 
-    const newViews = (current.views || 0) + 1;
+      const newViews = (current?.views || 0) + 1;
 
-    const { data: updated, error: updateError } = await supabase
-      .from<Post>('posts')
-      .update({ views: newViews })
-      .eq('id', id)
-      .select()
-      .single();
+      const { data: updated, error: updateError } = await supabase
+        .from('posts')
+        .update({ views: newViews })
+        .eq('id', id)
+        .select()
+        .single();
 
-    if (updateError || !updated) return null;
-    return updated as Post;
+      if (updateError) {
+        console.error('Error updating views:', updateError);
+        return null;
+      }
+      
+      console.log('View incremented successfully via fallback:', updated);
+      return updated as Post;
+    } catch (fallbackError) {
+      console.error('Fallback increment failed:', fallbackError);
+      return null;
+    }
   }
 
   async getAllPosts() {

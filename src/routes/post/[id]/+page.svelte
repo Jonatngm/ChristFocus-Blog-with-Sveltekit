@@ -4,17 +4,39 @@
 	import { onMount } from 'svelte';
 	import type { Post } from '$lib/types';
 	import { ArrowLeft, Calendar, Eye } from 'lucide-svelte';
+	import { browser } from '$app/environment';
 
 	let post: Post | null = null;
 	let loading = true;
 
 	$: postId = $page.params.id;
 
+	// Generate or retrieve anonymous ID for view tracking
+	function getAnonId(): string {
+		if (!browser) return '';
+		
+		let anonId = localStorage.getItem('anonId');
+		if (!anonId) {
+			anonId = 'anon_' + Date.now() + '_' + Math.random().toString(36).substring(2, 15);
+			localStorage.setItem('anonId', anonId);
+		}
+		return anonId;
+	}
+
 	onMount(async () => {
 		try {
 			post = await postService.getPostById(postId);
-			// Increment views
-			await postService.incrementViews(postId);
+			
+			// Increment views with anonymous ID and update post with new count
+			if (browser) {
+				const anonId = getAnonId();
+				const updatedPost = await postService.incrementViews(postId, { anonId });
+				
+				// Update the displayed view count
+				if (updatedPost && post) {
+					post.views = updatedPost.views;
+				}
+			}
 		} catch (error) {
 			console.error('Error loading post:', error);
 		} finally {
