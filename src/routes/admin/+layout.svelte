@@ -4,12 +4,21 @@
 	import { onMount } from 'svelte';
 	import { browser } from '$app/environment';
 
-	let user = $authStore.user;
-	let loading = $authStore.loading;
+	// Properly subscribe to store changes
+	$: user = $authStore.user;
+	$: loading = $authStore.loading;
 
-	$: if (browser && !loading && !user) {
-		goto('/login');
-	}
+	// Only redirect after mounting to avoid SSR issues
+	onMount(() => {
+		// Check auth state once component is mounted
+		const unsubscribe = authStore.subscribe(state => {
+			if (!state.loading && !state.user && browser) {
+				goto('/login', { replaceState: true });
+			}
+		});
+
+		return unsubscribe;
+	});
 </script>
 
 {#if loading}
