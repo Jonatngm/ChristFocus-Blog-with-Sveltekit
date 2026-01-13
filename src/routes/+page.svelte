@@ -51,54 +51,54 @@
 <div class="min-h-screen bg-white">
 	<Hero />
 
-	<div class="container mx-auto px-4 py-20 md:py-32">
+	<div class="container mx-auto px-4 sm:px-6 py-12 sm:py-16 md:py-20 lg:py-32">
 		<!-- Welcome Text Section -->
-		<div class="mb-20 text-center max-w-4xl mx-auto">
-			<h2 class="text-4xl md:text-6xl font-extrabold text-black mb-10 tracking-tight">
+		<div class="mb-12 sm:mb-16 md:mb-20 text-center max-w-4xl mx-auto">
+			<h2 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-black mb-6 sm:mb-8 md:mb-10 tracking-tight leading-tight">
 				Welcome to <span class="text-primary text-shadow-soft">ChristFocus</span>
 			</h2>
-			<div class="h-1 w-24 bg-gradient-to-r from-transparent via-primary to-transparent mx-auto mb-10"></div>
-			<p class="text-xl md:text-2xl text-gray-800 leading-relaxed font-medium">
+			<div class="h-1 w-16 sm:w-20 md:w-24 bg-gradient-to-r from-transparent via-primary to-transparent mx-auto mb-6 sm:mb-8 md:mb-10"></div>
+			<p class="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-800 leading-relaxed font-medium px-4">
 				ChristFocus is a Christ-centered space created to reveal the glory and presence of Jesus in every part of life. Here we proclaim the Gospel of Love, words that restore your soul, bring lasting peace, and give life a whole new depth and meaning. Through the wisdom and truth of Christ, you will find unwavering hope, victory over life's struggles, and the assurance of eternal triumph. Come, be encouraged, and let your heart be anchored in His love and light.
 			</p>
 		</div>
 
 		<!-- Search Bar -->
-		<div class="mb-20 max-w-2xl mx-auto">
+		<div class="mb-12 sm:mb-16 md:mb-20 max-w-2xl mx-auto px-2">
 			<div class="relative group">
-				<Search class="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 group-focus-within:text-primary transition-colors" />
+				<Search class="absolute left-4 sm:left-5 top-1/2 -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 text-gray-400 group-focus-within:text-primary transition-colors" />
 				<input
 					type="text"
 					bind:value={searchQuery}
 					placeholder="Search teachings..."
-					class="w-full pl-14 pr-6 py-5 border-2 border-gray-200 rounded-xl bg-white text-black placeholder:text-gray-400 focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all duration-300 outline-none shadow-sm hover:shadow-md text-lg"
+					class="w-full pl-12 sm:pl-14 pr-4 sm:pr-6 py-3 sm:py-4 md:py-5 border-2 border-gray-200 rounded-xl bg-white text-black placeholder:text-gray-400 focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all duration-300 outline-none shadow-sm hover:shadow-md text-base sm:text-lg"
 				/>
 			</div>
 		</div>
 
 		{#if loading}
-			<div class="flex items-center justify-center py-32">
+			<div class="flex items-center justify-center py-20 sm:py-24 md:py-32">
 				<div class="relative">
-					<div class="animate-spin rounded-full h-16 w-16 border-4 border-primary/20 border-t-primary"></div>
+					<div class="animate-spin rounded-full h-12 w-12 sm:h-16 sm:w-16 border-4 border-primary/20 border-t-primary"></div>
 					<div class="absolute inset-0 flex items-center justify-center">
-						<div class="w-8 h-8 rounded-full bg-primary/20"></div>
+						<div class="w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-primary/20"></div>
 					</div>
 				</div>
 			</div>
 		{:else}
 			<!-- Featured Posts -->
 			{#if featuredPosts.length > 0 && !searchQuery}
-				<section class="mb-32">
-					<div class="flex items-center gap-6 mb-16">
-						<div class="h-1.5 w-20 bg-gradient-to-r from-primary to-gold-dark rounded-full"></div>
-						<h2 class="text-4xl md:text-5xl font-extrabold text-black flex items-center gap-4 tracking-tight">
-							<div class="p-3 rounded-xl bg-gradient-to-br from-primary/10 to-gold-dark/10">
-								<BookOpen class="w-10 h-10 text-primary" />
+				<section class="mb-20 sm:mb-24 md:mb-32">
+					<div class="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6 mb-10 sm:mb-12 md:mb-16">
+						<div class="h-1.5 w-12 sm:w-16 md:w-20 bg-gradient-to-r from-primary to-gold-dark rounded-full"></div>
+						<h2 class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold text-black flex items-center gap-3 sm:gap-4 tracking-tight">
+							<div class="p-2 sm:p-2.5 md:p-3 rounded-xl bg-gradient-to-br from-primary/10 to-gold-dark/10">
+								<BookOpen class="w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 text-primary" />
 							</div>
-							Featured Teachings
+							<span class="leading-tight">Featured Teachings</span>
 						</h2>
 					</div>
-					<div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+					<div class="grid gap-6 sm:gap-7 md:gap-8 sm:grid-cols-2 lg:grid-cols-3">
 						{#each featuredPosts as post (post.id)}
 							<PostCard {post} />
 						{/each}
@@ -108,23 +108,23 @@
 
 			<!-- All Posts -->
 			<section>
-				<div class="flex items-center gap-6 mb-16">
-					<div class="h-1.5 w-20 bg-gradient-to-r from-primary to-gold-dark rounded-full"></div>
-					<h2 class="text-4xl md:text-5xl font-extrabold text-black tracking-tight">
+				<div class="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6 mb-10 sm:mb-12 md:mb-16">
+					<div class="h-1.5 w-12 sm:w-16 md:w-20 bg-gradient-to-r from-primary to-gold-dark rounded-full"></div>
+					<h2 class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold text-black tracking-tight leading-tight">
 						{searchQuery ? 'Search Results' : 'Latest Posts'}
 					</h2>
 				</div>
 				{#if filteredPosts.length > 0}
-					<div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+					<div class="grid gap-6 sm:gap-7 md:gap-8 sm:grid-cols-2 lg:grid-cols-3">
 						{#each filteredPosts as post (post.id)}
 							<PostCard {post} />
 						{/each}
 					</div>
 				{:else}
-					<div class="text-center py-32">
-						<div class="inline-block p-6 rounded-2xl bg-gray-50 border-2 border-gray-200">
-							<Search class="w-16 h-16 text-gray-300 mx-auto mb-4" />
-							<p class="text-gray-600 text-xl font-medium">No teachings found matching your search.</p>
+					<div class="text-center py-20 sm:py-24 md:py-32 px-4">
+						<div class="inline-block p-6 sm:p-8 rounded-2xl bg-gray-50 border-2 border-gray-200">
+							<Search class="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 text-gray-300 mx-auto mb-4" />
+							<p class="text-gray-600 text-lg sm:text-xl font-medium">No teachings found matching your search.</p>
 						</div>
 					</div>
 				{/if}
