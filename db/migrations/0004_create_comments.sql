@@ -16,6 +16,12 @@ CREATE INDEX IF NOT EXISTS idx_comments_created_at ON comments(created_at DESC);
 -- Enable RLS
 ALTER TABLE comments ENABLE ROW LEVEL SECURITY;
 
+-- Drop existing policies if they exist
+DROP POLICY IF EXISTS "Anyone can view comments" ON comments;
+DROP POLICY IF EXISTS "Authenticated users can insert comments" ON comments;
+DROP POLICY IF EXISTS "Users can update own comments" ON comments;
+DROP POLICY IF EXISTS "Users can delete own comments" ON comments;
+
 -- Policy: Anyone can view published post comments
 CREATE POLICY "Anyone can view comments" ON comments
     FOR SELECT
