@@ -6,7 +6,7 @@ export interface AuthUser {
 
 export interface Post {
   id: string;
-  user_id: string;
+  author_id: string;
   title: string;
   content: string;
   excerpt: string | null;
@@ -58,6 +58,5 @@ export interface Series {
   title: string;
   slug: string;
   description: string | null;
-  user_id: string;
   created_at: string;
 }
