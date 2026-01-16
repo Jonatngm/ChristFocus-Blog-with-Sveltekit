@@ -8,8 +8,15 @@
 	<div class="container mx-auto px-4 sm:px-6 py-10 sm:py-12 md:py-16">
 		<div class="flex flex-col items-center gap-5 sm:gap-6 text-center">
 			<div class="flex items-center gap-2.5 sm:gap-3 text-primary group">
-				<div class="p-2 sm:p-2.5 rounded-full bg-primary/20 group-hover:bg-primary/30 transition-all">
-					<Cross class="w-5 h-5 sm:w-6 sm:h-6" />
+				<div class="relative p-2 sm:p-2.5 rounded-xl bg-gradient-to-br from-primary via-gold-dark to-primary/80 group-hover:shadow-lg group-hover:shadow-primary/40 transition-all duration-300">
+					<!-- Decorative outer glow -->
+					<div class="absolute inset-0 rounded-xl bg-gradient-to-br from-primary/50 via-gold-dark/50 to-primary/50 blur-sm group-hover:blur-md transition-all"></div>
+					<!-- Cross icon -->
+					<div class="relative">
+						<Cross class="w-5 h-5 sm:w-6 sm:h-6 text-white group-hover:scale-110 transition-transform duration-300 drop-shadow-[0_2px_6px_rgba(0,0,0,0.4)]" strokeWidth={3} />
+						<!-- Shine overlay -->
+						<div class="absolute inset-0 bg-gradient-to-br from-white/40 via-transparent to-transparent rounded-sm opacity-50 group-hover:opacity-70 transition-opacity"></div>
+					</div>
 				</div>
 				<span class="font-bold text-xl sm:text-2xl tracking-tight">ChristFocus</span>
 			</div>

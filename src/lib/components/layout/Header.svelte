@@ -34,8 +34,15 @@
 <header class="sticky top-0 z-50 w-full border-b border-gray-200 bg-white/95 backdrop-blur-md shadow-sm">
 	<nav class="container mx-auto px-4 sm:px-6 h-16 sm:h-20 flex items-center justify-between">
 		<a href="/" on:click={closeMenu} class="flex items-center gap-2 sm:gap-3 font-bold text-xl sm:text-2xl group interactive">
-			<div class="p-1.5 sm:p-2 rounded-lg bg-gradient-to-br from-primary/10 to-gold-dark/10 group-hover:from-primary/20 group-hover:to-gold-dark/20 transition-all">
-				<Cross class="w-5 h-5 sm:w-6 sm:h-6 text-primary group-hover:scale-110 transition-transform" />
+			<div class="relative p-1.5 sm:p-2 rounded-xl bg-gradient-to-br from-primary via-gold-dark to-primary/80 group-hover:shadow-lg group-hover:shadow-primary/30 transition-all duration-300">
+				<!-- Decorative outer glow -->
+				<div class="absolute inset-0 rounded-xl bg-gradient-to-br from-primary/40 via-gold-dark/40 to-primary/40 blur-sm group-hover:blur-md transition-all"></div>
+				<!-- Cross icon with shine effect -->
+				<div class="relative">
+					<Cross class="w-5 h-5 sm:w-6 sm:h-6 text-white group-hover:scale-110 transition-transform duration-300 drop-shadow-[0_2px_4px_rgba(0,0,0,0.3)]" strokeWidth={3} />
+					<!-- Shine overlay -->
+					<div class="absolute inset-0 bg-gradient-to-br from-white/40 via-transparent to-transparent rounded-sm opacity-50 group-hover:opacity-70 transition-opacity"></div>
+				</div>
 			</div>
 			<span class="bg-gradient-to-r from-foreground via-primary to-gold-dark bg-clip-text text-transparent font-extrabold tracking-tight">ChristFocus</span>
 		</a>
