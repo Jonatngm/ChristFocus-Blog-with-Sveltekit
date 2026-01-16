@@ -9,6 +9,7 @@ export interface Comment {
 	content: string;
 	session_id?: string | null;
 	parent_id?: string | null;
+	likes_count?: number;
 	created_at: string;
 	updated_at: string;
 }
@@ -107,5 +108,47 @@ export const commentService = {
 			console.error('Error deleting comment:', error);
 			throw error;
 		}
+	},
+
+	// Toggle like on a comment
+	async toggleCommentLike(
+		commentId: string,
+		userId?: string | null,
+		sessionId?: string | null
+	): Promise<{ action: string; likes_count: number }> {
+		const { data, error } = await supabase.rpc('toggle_comment_like', {
+			p_comment_id: commentId,
+			p_user_id: userId || null,
+			p_session_id: sessionId || null
+		});
+
+		if (error) {
+			console.error('Error toggling comment like:', error);
+			throw error;
+		}
+
+		return data;
+	},
+
+	// Get liked status for multiple comments
+	async getCommentLikesStatus(
+		commentIds: string[],
+		userId?: string | null,
+		sessionId?: string | null
+	): Promise<Record<string, boolean>> {
+		if (commentIds.length === 0) return {};
+
+		const { data, error } = await supabase.rpc('get_comment_likes_status', {
+			p_comment_ids: commentIds,
+			p_user_id: userId || null,
+			p_session_id: sessionId || null
+		});
+
+		if (error) {
+			console.error('Error fetching comment likes status:', error);
+			return {};
+		}
+
+		return data || {};
 	}
 };

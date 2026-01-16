@@ -279,6 +279,7 @@
 				onDeleteComment={handleDeleteComment}
 				canDelete={canDeleteComment}
 				{currentUserEmail}
+				{commentSessionId}
 			/>
 		</section>
 	</article>

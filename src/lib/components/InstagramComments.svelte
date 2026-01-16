@@ -2,6 +2,7 @@
 	import { Heart, Send, MoreHorizontal, ChevronDown, ChevronUp } from 'lucide-svelte';
 	import { onMount } from 'svelte';
 	import type { Comment } from '$lib/services/commentService';
+	import { commentService } from '$lib/services/commentService';
 	import { authStore } from '$lib/stores/authStore';
 	
 	export let comments: Comment[] = [];
@@ -9,6 +10,7 @@
 	export let onDeleteComment: (id: string) => Promise<void>;
 	export let canDelete: (comment: Comment) => boolean;
 	export let currentUserEmail: string | null = null;
+	export let commentSessionId: string = '';
 	
 	let newComment = '';
 	let replyTo: string | null = null;
@@ -21,6 +23,28 @@
 	$: user = $authStore.user;
 	$: if (user?.email) {
 		authorName = user.email.split('@')[0];
+	}
+	
+	// Load liked status when comments change
+	$: if (comments.length > 0) {
+		loadLikedStatus();
+	}
+	
+	async function loadLikedStatus() {
+		try {
+			const commentIds = comments.map(c => c.id);
+			const userId = user?.id || null;
+			const sessionId = commentSessionId || null;
+			
+			const likedStatus = await commentService.getCommentLikesStatus(commentIds, userId, sessionId);
+			
+			// Update likedComments Set
+			likedComments = new Set(
+				Object.keys(likedStatus).filter(id => likedStatus[id])
+			);
+		} catch (error) {
+			console.error('Error loading liked status:', error);
+		}
 	}
 	
 	// Group comments by parent
@@ -55,13 +79,28 @@
 		return name?.charAt(0)?.toUpperCase() || '?';
 	}
 	
-	function toggleLike(commentId: string) {
-		if (likedComments.has(commentId)) {
-			likedComments.delete(commentId);
-		} else {
-			likedComments.add(commentId);
+	async function toggleLike(commentId: string) {
+		try {
+			const userId = user?.id || null;
+			const sessionId = commentSessionId || null;
+			
+			const result = await commentService.toggleCommentLike(commentId, userId, sessionId);
+			
+			// Update the liked state
+			if (result.action === 'liked') {
+				likedComments.add(commentId);
+			} else {
+				likedComments.delete(commentId);
+			}
+			likedComments = likedComments; // Trigger reactivity
+			
+			// Update the likes_count in the comments array
+			comments = comments.map(c => 
+				c.id === commentId ? { ...c, likes_count: result.likes_count } : c
+			);
+		} catch (error) {
+			console.error('Error toggling like:', error);
 		}
-		likedComments = likedComments; // Trigger reactivity
 	}
 	
 	function toggleReplies(commentId: string) {
@@ -143,6 +182,9 @@
 										<!-- Comment Actions -->
 										<div class="flex items-center gap-4 mt-2 text-xs text-gray-500">
 											<span>{getRelativeTime(comment.created_at)}</span>
+											{#if (comment.likes_count || 0) > 0}
+												<span class="font-semibold">{comment.likes_count} {comment.likes_count === 1 ? 'like' : 'likes'}</span>
+											{/if}
 											<button
 												on:click={() => toggleLike(comment.id)}
 												class="font-semibold hover:text-gray-700 transition-colors"
@@ -270,6 +312,9 @@
 													<!-- Reply Actions -->
 													<div class="flex items-center gap-4 mt-1.5 text-xs text-gray-500">
 														<span>{getRelativeTime(reply.created_at)}</span>
+														{#if (reply.likes_count || 0) > 0}
+															<span class="font-semibold">{reply.likes_count} {reply.likes_count === 1 ? 'like' : 'likes'}</span>
+														{/if}
 														<button
 															on:click={() => toggleLike(reply.id)}
 															class="font-semibold hover:text-gray-700 transition-colors"
