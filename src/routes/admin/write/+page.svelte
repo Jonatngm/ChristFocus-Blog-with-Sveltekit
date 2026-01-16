@@ -7,17 +7,19 @@
 	import { onMount } from 'svelte';
 	import type { Category, Tag } from '$lib/types';
 	import RichTextEditor from '$lib/components/RichTextEditor.svelte';
+	import { X } from 'lucide-svelte';
 
 	let title = '';
 	let content = '';
 	let excerpt = '';
 	let coverImage = '';
+	let coverImages: string[] = []; // Array of cover images
 	let published = false;
 	let featured = false;
 	let loading = false;
 	let uploadingImage = false;
-	let imageFile: File | null = null;
-	let imagePreview = '';
+	let imageFiles: File[] = []; // Multiple image files
+	let imagePreviews: string[] = []; // Multiple previews
 	let categories: Category[] = [];
 	let selectedCategories: string[] = [];
 	let tagInput = '';
@@ -48,36 +50,58 @@
 
 	async function handleImageUpload(e: Event) {
 		const input = e.target as HTMLInputElement;
-		const file = input.files?.[0];
+		const files = input.files;
 		
-		if (!file) return;
+		if (!files || files.length === 0) return;
 		
-		// Validate file type
-		if (!file.type.startsWith('image/')) {
-			toast.error('Please select an image file');
+		// Limit to 6 images total
+		if (imageFiles.length + files.length > 6) {
+			toast.error('You can upload maximum 6 images');
 			return;
 		}
 		
-		// Validate file size (5MB max)
-		if (file.size > 5 * 1024 * 1024) {
-			toast.error('Image size must be less than 5MB');
-			return;
+		for (const file of Array.from(files)) {
+			// Validate file type
+			if (!file.type.startsWith('image/')) {
+				toast.error(`${file.name} is not an image file`);
+				continue;
+			}
+			
+			// Validate file size (5MB max)
+			if (file.size > 5 * 1024 * 1024) {
+				toast.error(`${file.name} is larger than 5MB`);
+				continue;
+			}
+			
+			imageFiles = [...imageFiles, file];
+			
+			// Create preview
+			const reader = new FileReader();
+			reader.onload = (e) => {
+				imagePreviews = [...imagePreviews, e.target?.result as string];
+			};
+			reader.readAsDataURL(file);
 		}
-		
-		imageFile = file;
-		
-		// Create preview
-		const reader = new FileReader();
-		reader.onload = (e) => {
-			imagePreview = e.target?.result as string;
-		};
-		reader.readAsDataURL(file);
 	}
 
-	function removeImage() {
-		imageFile = null;
-		imagePreview = '';
-		coverImage = '';
+	function removeImage(index: number) {
+		imageFiles = imageFiles.filter((_, i) => i !== index);
+		imagePreviews = imagePreviews.filter((_, i) => i !== index);
+	}
+	
+	function removeCoverImageUrl(index: number) {
+		coverImages = coverImages.filter((_, i) => i !== index);
+	}
+	
+	function addCoverImageUrl() {
+		if (coverImage.trim()) {
+			if (coverImages.length >= 6) {
+				toast.error('Maximum 6 images allowed');
+				return;
+			}
+			coverImages = [...coverImages, coverImage.trim()];
+			coverImage = '';
+		}
 	}
 
 	async function handleSubmit(e: Event) {
@@ -96,17 +120,20 @@
 		loading = true;
 
 		try {
-			// Upload image if provided
-			let uploadedImageUrl = coverImage;
-			if (imageFile) {
+			// Upload all images if provided
+			let uploadedImageUrls: string[] = [...coverImages];
+			if (imageFiles.length > 0) {
 				uploadingImage = true;
 				try {
-					const fileName = `${Date.now()}-${imageFile.name}`;
-					uploadedImageUrl = await postService.uploadImage(imageFile, fileName);
-					toast.success('Image uploaded successfully');
+					for (const file of imageFiles) {
+						const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}-${file.name}`;
+						const url = await postService.uploadImage(file, fileName);
+						uploadedImageUrls.push(url);
+					}
+					toast.success(`${imageFiles.length} image(s) uploaded successfully`);
 				} catch (error: any) {
-					console.error('Error uploading image:', error);
-					toast.error('Failed to upload image, continuing without image');
+					console.error('Error uploading images:', error);
+					toast.error('Failed to upload some images');
 				} finally {
 					uploadingImage = false;
 				}
@@ -118,7 +145,8 @@
 				excerpt: excerpt || content.substring(0, 200),
 				published,
 				featured,
-				cover_image: uploadedImageUrl || '',
+				cover_image: uploadedImageUrls[0] || '', // First image as primary
+				cover_images: uploadedImageUrls.length > 0 ? uploadedImageUrls : undefined,
 				category_ids: selectedCategories,
 				tag_names: tags,
 			scheduled_at: null as any,

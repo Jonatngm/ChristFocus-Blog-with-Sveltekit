@@ -18,6 +18,7 @@ export interface Post {
   featured: boolean;
   scheduled_at: string | null;
   cover_image: string | null;
+  cover_images?: string[] | null; // Array of cover images for carousel
   views?: number | null;
   categories?: Category[];
   tags?: Tag[];
@@ -32,6 +33,7 @@ export interface PostFormData {
   featured: boolean;
   scheduled_at: string;
   cover_image: string;
+  cover_images?: string[]; // Array of cover images
   series_id: string;
   series_order: number;
   category_ids: string[];
