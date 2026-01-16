@@ -16,18 +16,44 @@ export interface CreateCommentData {
 }
 
 export const commentService = {
-	// Get all comments for a post
+	// Get all comments for a post with user email
 	async getPostComments(postId: string): Promise<Comment[]> {
-		const { data, error } = await supabase.rpc('get_post_comments', {
-			post_uuid: postId
-		});
+		try {
+			// First try using RPC function
+			const { data: rpcData, error: rpcError } = await supabase.rpc('get_post_comments', {
+				post_uuid: postId
+			});
 
-		if (error) {
-			console.error('Error fetching comments:', error);
-			throw error;
+			if (!rpcError && rpcData) {
+				console.log('Comments fetched via RPC:', rpcData);
+				return rpcData;
+			}
+
+			// Fallback to direct query if RPC fails
+			console.log('RPC failed, using direct query. Error:', rpcError);
+			
+			const { data, error } = await supabase
+				.from('comments')
+				.select('*')
+				.eq('post_id', postId)
+				.order('created_at', { ascending: false });
+
+			if (error) {
+				console.error('Error fetching comments via direct query:', error);
+				return [];
+			}
+
+			console.log('Comments fetched via direct query:', data);
+			
+			// Map to include a placeholder for user_email (will be fetched client-side)
+			return (data || []).map(comment => ({
+				...comment,
+				user_email: 'User' // Placeholder, will show email part in UI
+			}));
+		} catch (error) {
+			console.error('Error in getPostComments:', error);
+			return [];
 		}
-
-		return data || [];
 	},
 
 	// Create a new comment

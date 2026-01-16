@@ -20,6 +20,14 @@
 	$: postId = $page.params.id;
 	$: user = $authStore.user;
 
+	// Extract display name from email
+	function getDisplayName(email: string | undefined): string {
+		if (!email) return 'Anonymous';
+		const username = email.split('@')[0];
+		// Capitalize first letter
+		return username.charAt(0).toUpperCase() + username.slice(1);
+	}
+
 	// Generate or retrieve anonymous ID for view tracking
 	function getAnonId(): string {
 		if (!browser) return '';
@@ -60,8 +68,10 @@
 		try {
 			loadingComments = true;
 			comments = await commentService.getPostComments(postId);
+			console.log('Loaded comments:', comments.length, comments);
 		} catch (error) {
 			console.error('Error loading comments:', error);
+			comments = []; // Ensure we have an empty array on error
 		} finally {
 			loadingComments = false;
 		}
@@ -254,7 +264,7 @@
 								<div class="flex-1">
 									<div class="flex items-center gap-2 mb-1">
 										<span class="font-bold text-black text-sm sm:text-base">
-											{comment.user_email?.split('@')[0] || 'Anonymous'}
+											{getDisplayName(comment.user_email)}
 										</span>
 										<span class="text-xs sm:text-sm text-gray-500">
 											{new Date(comment.created_at).toLocaleDateString('en-US', {

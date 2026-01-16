@@ -47,7 +47,10 @@ RETURNS TABLE (
     created_at TIMESTAMP WITH TIME ZONE,
     updated_at TIMESTAMP WITH TIME ZONE,
     user_email TEXT
-) AS $$
+) 
+SECURITY DEFINER
+SET search_path = public
+AS $$
 BEGIN
     RETURN QUERY
     SELECT 
@@ -57,10 +60,14 @@ BEGIN
         c.content,
         c.created_at,
         c.updated_at,
-        u.email as user_email
+        COALESCE(u.email, 'Anonymous') as user_email
     FROM comments c
-    JOIN auth.users u ON c.user_id = u.id
+    LEFT JOIN auth.users u ON c.user_id = u.id
     WHERE c.post_id = post_uuid
     ORDER BY c.created_at DESC;
 END;
-$$ LANGUAGE plpgsql SECURITY DEFINER;
+$$ LANGUAGE plpgsql;
+
+-- Grant execute permission to authenticated and anonymous users
+GRANT EXECUTE ON FUNCTION get_post_comments(UUID) TO authenticated;
+GRANT EXECUTE ON FUNCTION get_post_comments(UUID) TO anon;
