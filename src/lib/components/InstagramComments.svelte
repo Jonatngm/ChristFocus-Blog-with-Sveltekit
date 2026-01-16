@@ -207,7 +207,7 @@
 														type="text"
 														bind:value={replyContent}
 														placeholder="Add a reply..."
-														class="flex-1 px-3 py-1.5 text-sm border border-gray-200 rounded-lg focus:outline-none focus:border-gray-400 transition-colors"
+														class="flex-1 px-3 py-1.5 text-sm text-gray-900 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
 														on:keydown={(e) => e.key === 'Enter' && !e.shiftKey && handleReply(comment.id)}
 													/>
 													<button
