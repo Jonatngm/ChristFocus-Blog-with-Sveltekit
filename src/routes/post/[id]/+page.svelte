@@ -48,6 +48,7 @@
 	}
 
 	async function handleSubmitComment(content: string, name: string, email: string, parentId?: string | null) {
+		console.log('handleSubmitComment called with parentId:', parentId);
 		try {
 			const commentData = {
 				post_id: postId,
@@ -57,6 +58,8 @@
 				session_id: user ? undefined : commentSessionId,
 				parent_id: parentId || null
 			};
+			
+			console.log('Comment data being sent:', commentData);
 
 			await commentService.createComment(commentData);
 			await loadComments();

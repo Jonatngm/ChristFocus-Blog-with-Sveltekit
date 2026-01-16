@@ -62,6 +62,9 @@ export const commentService = {
 
 	// Create a new comment (no authentication required)
 	async createComment(commentData: CreateCommentData, userId?: string): Promise<Comment> {
+		console.log('Creating comment with data:', commentData);
+		console.log('parent_id value:', commentData.parent_id);
+		
 		const { data, error } = await supabase
 			.from('comments')
 			.insert({
@@ -81,6 +84,7 @@ export const commentService = {
 			throw error;
 		}
 
+		console.log('Comment created successfully:', data);
 		return data;
 	},
 
