@@ -82,64 +82,31 @@ class PostService {
     };
   }
 
-  async incrementViews(id: string, userEmail?: string | null, anonId?: string | null) {
-    // Track views for both logged-in users (by email) and anonymous users (by browser ID)
-    if (!userEmail && !anonId) {
-      console.log('No user email or anon ID provided, skipping view increment');
+  async incrementViews(id: string, anonId: string): Promise<Post | null> {
+    // Only track views for anonymous visitors
+    // All logged-in users (admin, author, any authenticated account) are excluded
+    if (!anonId) {
       return null;
     }
 
     try {
       const { data: rpcData, error: rpcError } = await supabase.rpc('increment_unique_view', { 
         p_post_id: id, 
-        p_user_email: userEmail || null,
-        p_anon_id: anonId || null
+        p_anon_id: anonId
       });
       
-      if (!rpcError && rpcData) {
-        console.log('View incremented successfully via RPC');
-        if (Array.isArray(rpcData) && rpcData.length) return rpcData[0] as Post;
+      if (rpcError) {
+        console.error('View tracking error:', rpcError.message);
+        return null;
+      }
+      
+      if (rpcData) {
         return rpcData as Post;
       }
       
-      if (rpcError) {
-        console.warn('RPC increment_unique_view error:', rpcError);
-      }
+      return null;
     } catch (e) {
-      console.warn('RPC call failed, using fallback:', e);
-    }
-
-    // Fallback: simple increment without duplicate checking
-    try {
-      const { data: current, error: selectError } = await supabase
-        .from('posts')
-        .select('views')
-        .eq('id', id)
-        .single();
-
-      if (selectError) {
-        console.error('Error fetching current views:', selectError);
-        return null;
-      }
-
-      const newViews = (current?.views || 0) + 1;
-
-      const { data: updated, error: updateError } = await supabase
-        .from('posts')
-        .update({ views: newViews })
-        .eq('id', id)
-        .select()
-        .single();
-
-      if (updateError) {
-        console.error('Error updating views:', updateError);
-        return null;
-      }
-      
-      console.log('View incremented successfully via fallback:', updated);
-      return updated as Post;
-    } catch (fallbackError) {
-      console.error('Fallback increment failed:', fallbackError);
+      console.error('View tracking failed:', e);
       return null;
     }
   }

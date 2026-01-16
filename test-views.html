@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Count Test</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+    <h1>View Count Test</h1>
+    <button onclick="testViewIncrement()">Test View Increment</button>
+    <button onclick="checkRPC()">Check RPC Function</button>
+    <button onclick="checkTable()">Check post_views Table</button>
+    <pre id="output"></pre>
+
+    <script>
+        const SUPABASE_URL = 'https://jifmfseygebetlbhjifm.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpnZmZmc2V5Z2ViZXRsYmhqaWZtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzg3MzU4NTEsImV4cCI6MjA1NDMxMTg1MX0.9yPJgJ6_mVfHxZ5-xSYWKx-GzJztNEY4uW7zRTnXY8g';
+        
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        
+        const output = document.getElementById('output');
+        
+        function log(message) {
+            console.log(message);
+            output.textContent += message + '\n';
+        }
+
+        async function testViewIncrement() {
+            output.textContent = '';
+            log('=== Testing View Increment ===\n');
+            
+            try {
+                // Get a post first
+                log('1. Fetching first post...');
+                const { data: posts, error: postError } = await supabase
+                    .from('posts')
+                    .select('id, title, views')
+                    .limit(1);
+                
+                if (postError) {
+                    log('ERROR fetching posts: ' + JSON.stringify(postError));
+                    return;
+                }
+                
+                if (!posts || posts.length === 0) {
+                    log('No posts found in database');
+                    return;
+                }
+                
+                const post = posts[0];
+                log('Post: ' + post.title);
+                log('Current views: ' + post.views);
+                log('Post ID: ' + post.id);
+                
+                // Generate test IDs
+                const testAnonId = 'test_anon_' + Date.now();
+                const testEmail = 'test@example.com';
+                
+                log('\n2. Testing with anonymous ID: ' + testAnonId);
+                const { data: result1, error: error1 } = await supabase
+                    .rpc('increment_unique_view', {
+                        p_post_id: post.id,
+                        p_user_email: null,
+                        p_anon_id: testAnonId
+                    });
+                
+                if (error1) {
+                    log('ERROR with RPC call (anon): ' + JSON.stringify(error1, null, 2));
+                } else {
+                    log('SUCCESS! RPC returned: ' + JSON.stringify(result1));
+                }
+                
+                // Check updated views
+                const { data: updated1 } = await supabase
+                    .from('posts')
+                    .select('views')
+                    .eq('id', post.id)
+                    .single();
+                log('Updated views after anon increment: ' + updated1?.views);
+                
+                log('\n3. Testing with email: ' + testEmail);
+                const { data: result2, error: error2 } = await supabase
+                    .rpc('increment_unique_view', {
+                        p_post_id: post.id,
+                        p_user_email: testEmail,
+                        p_anon_id: null
+                    });
+                
+                if (error2) {
+                    log('ERROR with RPC call (email): ' + JSON.stringify(error2, null, 2));
+                } else {
+                    log('SUCCESS! RPC returned: ' + JSON.stringify(result2));
+                }
+                
+                // Check updated views
+                const { data: updated2 } = await supabase
+                    .from('posts')
+                    .select('views')
+                    .eq('id', post.id)
+                    .single();
+                log('Updated views after email increment: ' + updated2?.views);
+                
+            } catch (error) {
+                log('EXCEPTION: ' + error.message);
+            }
+        }
+
+        async function checkRPC() {
+            output.textContent = '';
+            log('=== Checking RPC Function ===\n');
+            
+            try {
+                // Try to call the function with a test UUID
+                const testUUID = '00000000-0000-0000-0000-000000000000';
+                const { data, error } = await supabase
+                    .rpc('increment_unique_view', {
+                        p_post_id: testUUID,
+                        p_user_email: 'test@test.com',
+                        p_anon_id: null
+                    });
+                
+                if (error) {
+                    if (error.code === '42883') {
+                        log('❌ RPC function does NOT exist in database');
+                        log('Error: ' + error.message);
+                        log('\nYou need to run the migration file:');
+                        log('db/migrations/0003_create_post_views.sql');
+                    } else if (error.code === '42P01') {
+                        log('❌ post_views table does NOT exist');
+                        log('Run the migration to create it');
+                    } else {
+                        log('Error calling RPC: ' + JSON.stringify(error, null, 2));
+                    }
+                } else {
+                    log('✅ RPC function EXISTS and is callable');
+                    log('Result: ' + JSON.stringify(data));
+                }
+            } catch (error) {
+                log('Exception: ' + error.message);
+            }
+        }
+
+        async function checkTable() {
+            output.textContent = '';
+            log('=== Checking post_views Table ===\n');
+            
+            try {
+                const { data, error } = await supabase
+                    .from('post_views')
+                    .select('*')
+                    .limit(5);
+                
+                if (error) {
+                    if (error.code === '42P01') {
+                        log('❌ post_views table does NOT exist');
+                        log('Run the migration to create it');
+                    } else {
+                        log('ERROR: ' + JSON.stringify(error, null, 2));
+                    }
+                } else {
+                    log('✅ post_views table exists');
+                    log('Row count: ' + data.length);
+                    log('\nSample rows:');
+                    log(JSON.stringify(data, null, 2));
+                }
+            } catch (error) {
+                log('Exception: ' + error.message);
+            }
+        }
+    </script>
+</body>
+</html>

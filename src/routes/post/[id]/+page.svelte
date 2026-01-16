@@ -19,9 +19,11 @@
 	let submittingComment = false;
 	let loadingComments = false;
 	let commentSessionId = '';
+	let viewTimeout: ReturnType<typeof setTimeout> | null = null;
 
 	$: postId = $page.params.id;
 	$: user = $authStore.user;
+	$: authLoading = $authStore.loading;
 
 	// Generate or retrieve comment session ID for anonymous users
 	function getCommentSessionId(): string {
@@ -69,6 +71,9 @@
 		if (!anonId) {
 			anonId = 'anon_' + Date.now() + '_' + Math.random().toString(36).substring(2, 15);
 			localStorage.setItem('anonId', anonId);
+			console.log('Generated new anonymous ID:', anonId);
+		} else {
+			console.log('Retrieved existing anonymous ID:', anonId);
 		}
 		return anonId;
 	}
@@ -77,17 +82,19 @@
 		try {
 			post = await postService.getPostById(postId);
 			
-			// Increment views for both logged-in users (by email) and anonymous users (by browser ID)
-			if (browser) {
-				const userEmail = user?.email || null;
-				const anonId = user ? null : getAnonId(); // Only use anon ID if not logged in
-				
-				const updatedPost = await postService.incrementViews(postId, userEmail, anonId);
-				
-				// Update the displayed view count
-				if (updatedPost && post) {
-					post.views = updatedPost.views;
-				}
+			// Wait for auth to initialize before checking user state
+			// This prevents incrementing views before we know if user is logged in
+			if (authLoading) {
+				console.log('Waiting for auth to load...');
+				// Wait for auth to finish loading
+				const unsubscribe = authStore.subscribe(state => {
+					if (!state.loading) {
+						unsubscribe();
+						checkAndIncrementView();
+					}
+				});
+			} else {
+				checkAndIncrementView();
 			}
 
 			// Load comments
@@ -102,7 +109,58 @@
 		} finally {
 			loading = false;
 		}
+
+		// Cleanup: Cancel view count if user leaves before 5 seconds
+		// This must be a separate return statement, not inside the async function
 	});
+
+	// Cleanup when component unmounts
+	$: if (browser) {
+		return () => {
+			if (viewTimeout) {
+				clearTimeout(viewTimeout);
+				console.log('View count cancelled - user left before 5 seconds');
+			}
+		};
+	}
+
+	function checkAndIncrementView() {
+		// Get current user state
+		const currentUser = $authStore.user;
+		console.log('=== Auth loaded. Current user state:', currentUser ? `Logged in as ${currentUser.email}` : 'Anonymous visitor');
+		
+		// Only increment views for anonymous (non-logged-in) visitors
+		// All logged-in users (admin, author, or any authenticated account) are completely excluded
+		if (browser && !currentUser) {
+			const anonId = getAnonId();
+			console.log('✓ Anonymous visitor detected. Starting 5-second timer before counting view...');
+			console.log('  Anonymous ID:', anonId);
+			console.log('  Post ID:', postId);
+			
+			// Wait 5 seconds before counting the view
+			// This ensures the user is actually reading the post, not just passing through
+			viewTimeout = setTimeout(() => {
+				console.log('✓ 5 seconds elapsed. Counting view now...');
+				
+				postService.incrementViews(postId, anonId).then(updatedPost => {
+					// Update the displayed view count
+					if (updatedPost && post) {
+						console.log('✓ View counted successfully! Count:', post.views, '→', updatedPost.views);
+						post.views = updatedPost.views;
+					} else {
+						console.log('⚠ View already counted for this device (duplicate prevented)');
+					}
+				}).catch(err => {
+					console.error('✗ Error counting view:', err);
+				});
+				
+				viewTimeout = null;
+			}, 5000); // 5 seconds
+		} else if (currentUser) {
+			console.log('✗ Logged-in user detected - view will NOT be counted');
+			console.log('  User email:', currentUser.email);
+		}
+	}
 
 	async function loadComments() {
 		try {
