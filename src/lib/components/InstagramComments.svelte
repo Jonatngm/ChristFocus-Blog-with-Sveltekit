@@ -185,28 +185,49 @@
 										
 										<!-- Reply Input -->
 										{#if replyTo === comment.id}
-											<div class="mt-3 flex gap-2">
-												<input
-													id="reply-{comment.id}"
-													type="text"
-													bind:value={replyContent}
-													placeholder="Add a reply..."
-													class="flex-1 px-3 py-1.5 text-sm border border-gray-200 rounded-lg focus:outline-none focus:border-gray-400 transition-colors"
-													on:keydown={(e) => e.key === 'Enter' && !e.shiftKey && handleReply(comment.id)}
-												/>
-												<button
-													on:click={() => handleReply(comment.id)}
-													disabled={!replyContent.trim() || submitting}
-													class="px-3 py-1.5 text-sm font-semibold text-primary hover:text-primary/80 disabled:text-gray-300 transition-colors"
-												>
-													Post
-												</button>
-												<button
-													on:click={() => { replyTo = null; replyContent = ''; }}
-													class="px-3 py-1.5 text-sm font-semibold text-gray-500 hover:text-gray-700 transition-colors"
-												>
-													Cancel
-												</button>
+											<div class="mt-3 space-y-2">
+												<!-- Name/Email for anonymous users -->
+												{#if !user}
+													<div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+														<input
+															type="text"
+															bind:value={authorName}
+															placeholder="Your name *"
+															class="px-3 py-1.5 text-sm border border-gray-200 rounded-lg focus:outline-none focus:border-gray-400 transition-colors"
+															required
+														/>
+														<input
+															type="email"
+															bind:value={authorEmail}
+															placeholder="Email (optional)"
+															class="px-3 py-1.5 text-sm border border-gray-200 rounded-lg focus:outline-none focus:border-gray-400 transition-colors"
+														/>
+													</div>
+												{/if}
+												
+												<div class="flex gap-2">
+													<input
+														id="reply-{comment.id}"
+														type="text"
+														bind:value={replyContent}
+														placeholder="Add a reply..."
+														class="flex-1 px-3 py-1.5 text-sm border border-gray-200 rounded-lg focus:outline-none focus:border-gray-400 transition-colors"
+														on:keydown={(e) => e.key === 'Enter' && !e.shiftKey && handleReply(comment.id)}
+													/>
+													<button
+														on:click={() => handleReply(comment.id)}
+														disabled={!replyContent.trim() || !authorName.trim() || submitting}
+														class="px-3 py-1.5 text-sm font-semibold text-primary hover:text-primary/80 disabled:text-gray-300 transition-colors"
+													>
+														Post
+													</button>
+													<button
+														on:click={() => { replyTo = null; replyContent = ''; }}
+														class="px-3 py-1.5 text-sm font-semibold text-gray-500 hover:text-gray-700 transition-colors"
+													>
+														Cancel
+													</button>
+												</div>
 											</div>
 										{/if}
 									</div>
@@ -294,6 +315,25 @@
 	
 	<!-- Fixed Comment Input -->
 	<div class="comment-input-container border-t border-gray-200 bg-white px-4 py-3">
+		<!-- Name/Email inputs for anonymous users -->
+		{#if !user}
+			<div class="mb-3 grid grid-cols-1 md:grid-cols-2 gap-2">
+				<input
+					type="text"
+					bind:value={authorName}
+					placeholder="Your name *"
+					class="px-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:border-gray-400 transition-colors"
+					required
+				/>
+				<input
+					type="email"
+					bind:value={authorEmail}
+					placeholder="Email (optional)"
+					class="px-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:border-gray-400 transition-colors"
+				/>
+			</div>
+		{/if}
+		
 		<div class="flex items-center gap-3">
 			<!-- Avatar -->
 			<div class="flex-shrink-0">
@@ -314,7 +354,7 @@
 				/>
 				<button
 					on:click={handleSubmit}
-					disabled={!newComment.trim() || submitting}
+					disabled={!newComment.trim() || !authorName.trim() || submitting}
 					class="absolute right-2 top-1/2 -translate-y-1/2 p-1.5 text-primary hover:text-primary/80 disabled:text-gray-300 transition-colors"
 					aria-label="Post comment"
 				>
