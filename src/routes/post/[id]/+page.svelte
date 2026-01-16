@@ -214,11 +214,11 @@
 	{:else if post}
 		<!-- Hero Section with Cover Image -->
 		{#if post.cover_image}
-			<div class="relative w-full h-[50vh] sm:h-[60vh] md:h-[70vh] lg:h-[75vh] overflow-hidden bg-black">
+			<div class="relative w-full h-[50vh] sm:h-[60vh] md:h-[70vh] lg:h-[75vh] overflow-hidden bg-gradient-to-b from-gray-900 to-black">
 				<img
 					src={post.cover_image}
 					alt={post.title}
-					class="w-full h-full object-cover opacity-90"
+					class="w-full h-full object-contain opacity-90"
 				/>
 				<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
 				
