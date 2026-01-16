@@ -240,7 +240,7 @@
 								
 								<!-- Replies Section - Always visible, styled like Instagram -->
 								{#if commentReplies[comment.id] && commentReplies[comment.id].length > 0}
-									<div class="mt-3 ml-8 sm:ml-10 space-y-3">
+									<div class="mt-3 space-y-3">
 										{#each getVisibleReplies(comment.id) as reply}
 											<div class="flex gap-2">
 												<!-- Reply Avatar - Smaller -->
