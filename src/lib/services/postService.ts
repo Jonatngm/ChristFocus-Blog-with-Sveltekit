@@ -82,20 +82,21 @@ class PostService {
     };
   }
 
-  async incrementViews(id: string, opts?: { userId?: string | null; anonId?: string | null }) {
-    // Prefer DB-side RPC for atomic unique view insertion.
-    const userId = opts?.userId ?? null;
-    const anonId = opts?.anonId ?? null;
+  async incrementViews(id: string, userEmail?: string | null) {
+    // Only track views for logged-in users with email
+    if (!userEmail) {
+      console.log('No user email provided, skipping view increment');
+      return null;
+    }
 
     try {
       const { data: rpcData, error: rpcError } = await supabase.rpc('increment_unique_view', { 
         p_post_id: id, 
-        p_user_id: userId, 
-        p_anon_id: anonId 
+        p_user_email: userEmail
       });
       
       if (!rpcError && rpcData) {
-        console.log('View incremented successfully via RPC:', rpcData);
+        console.log('View incremented successfully via RPC for email:', userEmail);
         if (Array.isArray(rpcData) && rpcData.length) return rpcData[0] as Post;
         return rpcData as Post;
       }
