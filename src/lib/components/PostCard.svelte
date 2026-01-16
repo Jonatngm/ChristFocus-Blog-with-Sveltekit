@@ -1,6 +1,8 @@
 <script lang="ts">
 	import type { Post } from '$lib/types';
 	import { Calendar, BookOpen, Eye } from 'lucide-svelte';
+	import { onMount, onDestroy } from 'svelte';
+	import { fade } from 'svelte/transition';
 
 	export let post: Post;
 
@@ -15,17 +17,66 @@
 		if (count >= 1000) return (count / 1000).toFixed(1) + 'k';
 		return count.toString();
 	}
+
+	// Carousel state
+	let currentImageIndex = 0;
+	let carouselIntervalId: ReturnType<typeof setInterval> | null = null;
+	const carouselTransitionDuration = 5000; // 5 seconds
+
+	// Get cover images array (fallback to single cover_image if needed)
+	$: coverImages = post?.cover_images && post.cover_images.length > 0 
+		? post.cover_images 
+		: post?.cover_image ? [post.cover_image] : [];
+
+	// Start carousel if multiple images
+	$: if (post?.cover_images && post.cover_images.length > 1 && !carouselIntervalId) {
+		carouselIntervalId = setInterval(() => {
+			currentImageIndex = (currentImageIndex + 1) % post!.cover_images!.length;
+		}, carouselTransitionDuration);
+	}
+
+	// Preload next image for smooth transitions
+	$: if (typeof window !== 'undefined' && post?.cover_images && post.cover_images.length > 1) {
+		const nextIndex = (currentImageIndex + 1) % post.cover_images.length;
+		const img = new Image();
+		img.src = post.cover_images[nextIndex];
+	}
+
+	onDestroy(() => {
+		if (carouselIntervalId) {
+			clearInterval(carouselIntervalId);
+			carouselIntervalId = null;
+		}
+	});
 </script>
 
 <a href="/post/{post.id}" class="block h-full group">
 	<div class="h-full transition-all duration-500 border-2 border-gray-200 rounded-xl overflow-hidden bg-white hover:border-primary group-hover:shadow-2xl group-hover:-translate-y-2">
-		{#if post.cover_image}
-			<div class="w-full h-48 sm:h-52 md:h-56 overflow-hidden bg-gray-100">
-				<img
-					src={post.cover_image}
-					alt={post.title}
-					class="w-full h-full object-contain transition-transform duration-700 group-hover:scale-110"
-				/>
+		{#if coverImages.length > 0}
+			<div class="relative w-full h-48 sm:h-52 md:h-56 overflow-hidden bg-gray-100">
+				{#each coverImages as image, index (image)}
+					{#if index === currentImageIndex}
+						<img
+							src={image}
+							alt="{post.title} - Image {index + 1}"
+							class="absolute inset-0 w-full h-full object-contain transition-transform duration-700 group-hover:scale-110"
+							loading={index === 0 ? 'eager' : 'lazy'}
+							in:fade={{ duration: 1000 }}
+							out:fade={{ duration: 1000 }}
+						/>
+					{/if}
+				{/each}
+				
+				<!-- Dot indicators for multiple images -->
+				{#if coverImages.length > 1}
+					<div class="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1 z-10">
+						{#each coverImages as _, index}
+							<div
+								class="w-1.5 h-1.5 rounded-full transition-all duration-300 {index === currentImageIndex ? 'bg-primary w-3' : 'bg-white/60'}"
+							></div>
+						{/each}
+					</div>
+				{/if}
 			</div>
 		{/if}
 		

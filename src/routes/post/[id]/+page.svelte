@@ -245,23 +245,43 @@
 			<div class="animate-spin rounded-full h-12 w-12 sm:h-16 sm:w-16 border-b-3 border-primary"></div>
 		</div>
 	{:else if post}
-		<!-- Hero Section with Cover Image -->
-		{#if post.cover_image}
+		<!-- Hero Section with Cover Image Carousel -->
+		{#if coverImages.length > 0}
 			<div class="relative w-full h-[50vh] sm:h-[60vh] md:h-[70vh] lg:h-[75vh] overflow-hidden bg-gradient-to-b from-gray-900 to-black">
-				<img
-					src={post.cover_image}
-					alt={post.title}
-					class="w-full h-full object-contain opacity-90"
-				/>
+				{#each coverImages as image, index (image)}
+					{#if index === currentImageIndex}
+						<img
+							src={image}
+							alt="{post.title} - Image {index + 1}"
+							class="absolute inset-0 w-full h-full object-contain opacity-90"
+							loading={index === 0 ? 'eager' : 'lazy'}
+							in:fade={{ duration: 1000 }}
+							out:fade={{ duration: 1000 }}
+						/>
+					{/if}
+				{/each}
 				<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
 				
 				<!-- Back button overlay -->
-				<div class="absolute top-4 left-4 sm:top-6 sm:left-6 md:top-8 md:left-8">
+				<div class="absolute top-4 left-4 sm:top-6 sm:left-6 md:top-8 md:left-8 z-20">
 					<a href="/" class="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-md text-white hover:bg-white/20 rounded-full font-semibold transition-all shadow-lg border border-white/20">
 						<ArrowLeft class="w-4 h-4 sm:w-5 sm:h-5" />
 						<span class="hidden sm:inline">Back to home</span>
 					</a>
 				</div>
+				
+				<!-- Dot indicators for multiple images -->
+				{#if coverImages.length > 1}
+					<div class="absolute bottom-8 sm:bottom-12 left-1/2 -translate-x-1/2 flex gap-2 sm:gap-3 z-20">
+						{#each coverImages as _, index}
+							<button
+								on:click={() => currentImageIndex = index}
+								class="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full transition-all duration-300 {index === currentImageIndex ? 'bg-primary w-6 sm:w-8' : 'bg-white/50 hover:bg-white/70'}"
+								aria-label="Go to image {index + 1}"
+							></button>
+						{/each}
+					</div>
+				{/if}
 			</div>
 		{:else}
 			<!-- Simple header for posts without cover -->
@@ -278,9 +298,9 @@
 		<!-- Main Content -->
 		<article class="container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl">
 			<!-- Article Header -->
-			<header class="-mt-20 sm:-mt-24 md:-mt-32 lg:-mt-40 relative z-10 {post.cover_image ? 'mb-8 sm:mb-12 md:mb-16' : 'mb-6 sm:mb-8 md:mb-10'}">
+			<header class="-mt-20 sm:-mt-24 md:-mt-32 lg:-mt-40 relative z-10 {coverImages.length > 0 ? 'mb-8 sm:mb-12 md:mb-16' : 'mb-6 sm:mb-8 md:mb-10'}">
 				<div class="max-w-4xl mx-auto">
-					{#if post.cover_image}
+					{#if coverImages.length > 0}
 						<!-- Title over image -->
 						<div class="bg-white rounded-2xl sm:rounded-3xl shadow-2xl p-6 sm:p-8 md:p-10 lg:p-12">
 							<!-- Categories -->
