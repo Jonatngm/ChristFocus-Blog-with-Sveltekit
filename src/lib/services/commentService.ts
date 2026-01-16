@@ -3,15 +3,18 @@ import { supabase } from './supabase';
 export interface Comment {
 	id: string;
 	post_id: string;
-	user_id: string;
+	user_id?: string | null;
+	author_name: string;
+	author_email?: string | null;
 	content: string;
 	created_at: string;
 	updated_at: string;
-	user_email?: string;
 }
 
 export interface CreateCommentData {
 	post_id: string;
+	author_name: string;
+	author_email?: string;
 	content: string;
 }
 
@@ -45,24 +48,22 @@ export const commentService = {
 
 			console.log('Comments fetched via direct query:', data);
 			
-			// Map to include a placeholder for user_email (will be fetched client-side)
-			return (data || []).map(comment => ({
-				...comment,
-				user_email: 'User' // Placeholder, will show email part in UI
-			}));
+			return data || [];
 		} catch (error) {
 			console.error('Error in getPostComments:', error);
 			return [];
 		}
 	},
 
-	// Create a new comment
-	async createComment(userId: string, commentData: CreateCommentData): Promise<Comment> {
+	// Create a new comment (no authentication required)
+	async createComment(commentData: CreateCommentData, userId?: string): Promise<Comment> {
 		const { data, error } = await supabase
 			.from('comments')
 			.insert({
 				post_id: commentData.post_id,
-				user_id: userId,
+				user_id: userId || null,
+				author_name: commentData.author_name,
+				author_email: commentData.author_email || null,
 				content: commentData.content
 			})
 			.select()

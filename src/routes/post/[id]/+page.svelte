@@ -14,18 +14,25 @@
 	let loading = true;
 	let comments: Comment[] = [];
 	let commentContent = '';
+	let commentAuthorName = '';
+	let commentAuthorEmail = '';
 	let submittingComment = false;
 	let loadingComments = false;
 
 	$: postId = $page.params.id;
 	$: user = $authStore.user;
 
+	// Auto-fill name and email if user is logged in
+	$: if (user?.email) {
+		commentAuthorName = user.email.split('@')[0];
+		commentAuthorEmail = user.email;
+	}
+
 	// Extract display name from email
-	function getDisplayName(email: string | undefined): string {
-		if (!email) return 'Anonymous';
-		const username = email.split('@')[0];
+	function getDisplayName(name: string | undefined): string {
+		if (!name) return 'Anonymous';
 		// Capitalize first letter
-		return username.charAt(0).toUpperCase() + username.slice(1);
+		return name.charAt(0).toUpperCase() + name.slice(1);
 	}
 
 	// Generate or retrieve anonymous ID for view tracking
@@ -80,8 +87,8 @@
 	async function handleCommentSubmit(e: Event) {
 		e.preventDefault();
 
-		if (!user) {
-			toast.error('Please log in to comment');
+		if (!commentAuthorName.trim()) {
+			toast.error('Please enter your name');
 			return;
 		}
 
@@ -92,13 +99,20 @@
 
 		try {
 			submittingComment = true;
-			await commentService.createComment(user.id, {
+			await commentService.createComment({
 				post_id: postId,
+				author_name: commentAuthorName.trim(),
+				author_email: commentAuthorEmail.trim() || undefined,
 				content: commentContent.trim()
-			});
+			}, user?.id);
 
 			toast.success('Comment posted successfully!');
 			commentContent = '';
+			// Only clear name/email if user is not logged in
+			if (!user) {
+				commentAuthorName = '';
+				commentAuthorEmail = '';
+			}
 			await loadComments();
 		} catch (error: any) {
 			console.error('Error posting comment:', error);
@@ -209,43 +223,64 @@
 			<h2 class="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8 text-black">Comments</h2>
 
 			<!-- Comment Form -->
-			{#if user}
-				<form on:submit={handleCommentSubmit} class="mb-8 sm:mb-10">
-					<div class="bg-white p-4 sm:p-6 rounded-xl border-2 border-gray-200 shadow-lg">
-						<label for="comment" class="text-sm font-bold text-black uppercase tracking-wide mb-2 block">
-							Add a comment
-						</label>
-						<textarea
-							id="comment"
-							bind:value={commentContent}
-							disabled={submittingComment}
-							rows="4"
-							class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg bg-white text-black placeholder:text-gray-400 focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all outline-none resize-y text-sm sm:text-base mb-4"
-							placeholder="Share your thoughts..."
-						></textarea>
-						<div class="flex justify-end">
-							<Button
-								type="submit"
-								disabled={submittingComment || !commentContent.trim()}
-								class="bg-gradient-to-r from-primary to-gold-dark hover:from-primary/90 hover:to-gold-dark/90"
-							>
-								{submittingComment ? 'Posting...' : 'Post Comment'}
-							</Button>
+			<form on:submit={handleCommentSubmit} class="mb-8 sm:mb-10">
+				<div class="bg-white p-4 sm:p-6 rounded-xl border-2 border-gray-200 shadow-lg">
+					<label class="text-sm font-bold text-black uppercase tracking-wide mb-4 block">
+						Leave a comment
+					</label>
+					
+					<!-- Name and Email fields -->
+					<div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+						<div>
+							<label for="authorName" class="text-xs font-semibold text-gray-700 mb-1 block">
+								Name <span class="text-red-600">*</span>
+							</label>
+							<input
+								id="authorName"
+								type="text"
+								bind:value={commentAuthorName}
+								disabled={submittingComment}
+								required
+								class="w-full px-3 py-2 border-2 border-gray-200 rounded-lg bg-white text-black placeholder:text-gray-400 focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all outline-none text-sm"
+								placeholder="Your name"
+							/>
+						</div>
+						<div>
+							<label for="authorEmail" class="text-xs font-semibold text-gray-700 mb-1 block">
+								Email (optional)
+							</label>
+							<input
+								id="authorEmail"
+								type="email"
+								bind:value={commentAuthorEmail}
+								disabled={submittingComment}
+								class="w-full px-3 py-2 border-2 border-gray-200 rounded-lg bg-white text-black placeholder:text-gray-400 focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all outline-none text-sm"
+								placeholder="your@email.com"
+							/>
 						</div>
 					</div>
-				</form>
-			{:else}
-				<div class="bg-gray-50 p-6 sm:p-8 rounded-xl border-2 border-gray-200 text-center mb-8 sm:mb-10">
-					<p class="text-gray-700 text-base sm:text-lg mb-4">
-						Please log in to join the conversation and share your thoughts.
-					</p>
-					<a href="/login">
-						<Button class="bg-gradient-to-r from-primary to-gold-dark hover:from-primary/90 hover:to-gold-dark/90">
-							Log In to Comment
+
+					<!-- Comment textarea -->
+					<textarea
+						id="comment"
+						bind:value={commentContent}
+						disabled={submittingComment}
+						required
+						rows="4"
+						class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg bg-white text-black placeholder:text-gray-400 focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all outline-none resize-y text-sm sm:text-base mb-4"
+						placeholder="Share your thoughts..."
+					></textarea>
+					<div class="flex justify-end">
+						<Button
+							type="submit"
+							disabled={submittingComment || !commentContent.trim() || !commentAuthorName.trim()}
+							class="bg-gradient-to-r from-primary to-gold-dark hover:from-primary/90 hover:to-gold-dark/90"
+						>
+							{submittingComment ? 'Posting...' : 'Post Comment'}
 						</Button>
-					</a>
+					</div>
 				</div>
-			{/if}
+			</form>
 
 			<!-- Comments List -->
 			{#if loadingComments}
@@ -264,7 +299,7 @@
 								<div class="flex-1">
 									<div class="flex items-center gap-2 mb-1">
 										<span class="font-bold text-black text-sm sm:text-base">
-											{getDisplayName(comment.user_email)}
+											{getDisplayName(comment.author_name)}
 										</span>
 										<span class="text-xs sm:text-sm text-gray-500">
 											{new Date(comment.created_at).toLocaleDateString('en-US', {
