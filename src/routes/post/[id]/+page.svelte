@@ -373,7 +373,7 @@
 						onSubmitComment={handleSubmitComment}
 						onDeleteComment={handleDeleteComment}
 						canDelete={canDeleteComment}
-						{currentUserEmail}
+
 						{commentSessionId}
 					/>
 				</div>

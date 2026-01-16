@@ -9,7 +9,6 @@
 	export let onSubmitComment: (content: string, name: string, email: string, parentId?: string) => Promise<void>;
 	export let onDeleteComment: (id: string) => Promise<void>;
 	export let canDelete: (comment: Comment) => boolean;
-	export let currentUserEmail: string | null = null;
 	export let commentSessionId: string = '';
 	
 	let newComment = '';

@@ -9,7 +9,6 @@
 	import Highlight from '@tiptap/extension-highlight';
 
 	export let content = '';
-	export let placeholder = 'Start writing...';
 
 	let element: HTMLDivElement;
 	let editor: Editor;

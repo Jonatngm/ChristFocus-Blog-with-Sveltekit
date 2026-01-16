@@ -64,7 +64,7 @@
 						on:click={() => currentIndex = index}
 						class="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full transition-all duration-300 {index === currentIndex ? 'bg-primary w-6 sm:w-8' : 'bg-white/50 hover:bg-white/70'}"
 						aria-label="Go to slide {index + 1}"
-					/>
+					></button>
 				{/each}
 			</div>
 		{/if}

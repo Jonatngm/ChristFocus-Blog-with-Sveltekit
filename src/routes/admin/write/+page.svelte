@@ -197,7 +197,7 @@
 				<!-- Content -->
 				<div class="space-y-2">
 					<label for="content" class="text-xs sm:text-sm font-bold text-black uppercase tracking-wide">Content</label>
-					<RichTextEditor bind:content placeholder="Write your teaching content here..." />
+					<RichTextEditor bind:content />
 				</div>
 
 				<!-- Excerpt -->
@@ -214,9 +214,7 @@
 
 				<!-- Cover Images (1-6) -->
 				<div class="space-y-2">
-					<label class="text-sm font-medium text-foreground">Cover Images (Optional - Max 6 for carousel)</label>
-					<p class="text-xs text-muted-foreground">Add 1-6 images. Multiple images will display as a carousel.</p>
-					
+				<div class="text-sm font-medium text-foreground" role="heading" aria-level="3">Cover Images (Optional - Max 6 for carousel)</div>
 					<!-- Image previews grid -->
 					{#if imagePreviews.length > 0 || coverImages.length > 0}
 						<div class="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-4">
