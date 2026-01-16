@@ -10,6 +10,29 @@ CREATE TABLE IF NOT EXISTS comments (
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
+-- Alter existing table to add new columns if they don't exist
+DO $$ 
+BEGIN
+    -- Add author_name column if it doesn't exist
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns 
+                   WHERE table_name = 'comments' AND column_name = 'author_name') THEN
+        ALTER TABLE comments ADD COLUMN author_name TEXT;
+    END IF;
+    
+    -- Add author_email column if it doesn't exist
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns 
+                   WHERE table_name = 'comments' AND column_name = 'author_email') THEN
+        ALTER TABLE comments ADD COLUMN author_email TEXT;
+    END IF;
+    
+    -- Make user_id nullable if it isn't already
+    ALTER TABLE comments ALTER COLUMN user_id DROP NOT NULL;
+    
+    -- Update author_name to NOT NULL after adding default values
+    UPDATE comments SET author_name = 'Anonymous' WHERE author_name IS NULL;
+    ALTER TABLE comments ALTER COLUMN author_name SET NOT NULL;
+END $$;
+
 -- Create index for faster queries
 CREATE INDEX IF NOT EXISTS idx_comments_post_id ON comments(post_id);
 CREATE INDEX IF NOT EXISTS idx_comments_user_id ON comments(user_id);
