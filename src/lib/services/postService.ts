@@ -82,21 +82,22 @@ class PostService {
     };
   }
 
-  async incrementViews(id: string, userEmail?: string | null) {
-    // Only track views for logged-in users with email
-    if (!userEmail) {
-      console.log('No user email provided, skipping view increment');
+  async incrementViews(id: string, userEmail?: string | null, anonId?: string | null) {
+    // Track views for both logged-in users (by email) and anonymous users (by browser ID)
+    if (!userEmail && !anonId) {
+      console.log('No user email or anon ID provided, skipping view increment');
       return null;
     }
 
     try {
       const { data: rpcData, error: rpcError } = await supabase.rpc('increment_unique_view', { 
         p_post_id: id, 
-        p_user_email: userEmail
+        p_user_email: userEmail || null,
+        p_anon_id: anonId || null
       });
       
       if (!rpcError && rpcData) {
-        console.log('View incremented successfully via RPC for email:', userEmail);
+        console.log('View incremented successfully via RPC');
         if (Array.isArray(rpcData) && rpcData.length) return rpcData[0] as Post;
         return rpcData as Post;
       }

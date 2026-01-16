@@ -61,13 +61,28 @@
 		return name.charAt(0).toUpperCase() + name.slice(1);
 	}
 
+	// Generate or retrieve anonymous ID for view tracking
+	function getAnonId(): string {
+		if (!browser) return '';
+		
+		let anonId = localStorage.getItem('anonId');
+		if (!anonId) {
+			anonId = 'anon_' + Date.now() + '_' + Math.random().toString(36).substring(2, 15);
+			localStorage.setItem('anonId', anonId);
+		}
+		return anonId;
+	}
+
 	onMount(async () => {
 		try {
 			post = await postService.getPostById(postId);
 			
-			// Increment views only for logged-in users based on their email
-			if (browser && user?.email) {
-				const updatedPost = await postService.incrementViews(postId, user.email);
+			// Increment views for both logged-in users (by email) and anonymous users (by browser ID)
+			if (browser) {
+				const userEmail = user?.email || null;
+				const anonId = user ? null : getAnonId(); // Only use anon ID if not logged in
+				
+				const updatedPost = await postService.incrementViews(postId, userEmail, anonId);
 				
 				// Update the displayed view count
 				if (updatedPost && post) {
