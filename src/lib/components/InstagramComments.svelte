@@ -186,13 +186,19 @@
 											<div class="mt-3 space-y-2">
 												<!-- Name for anonymous users -->
 												{#if !user}
-													<input
-														type="text"
-														bind:value={authorName}
-														placeholder="Your name *"
-														class="w-full px-3 py-1.5 text-sm border border-gray-200 rounded-lg focus:outline-none focus:border-gray-400 transition-colors"
-														required
-													/>
+													<div>
+														<label for="reply-author-name-{comment.id}" class="block text-xs font-medium text-gray-600 mb-1">
+															Your Name <span class="text-red-500">*</span>
+														</label>
+														<input
+															id="reply-author-name-{comment.id}"
+															type="text"
+															bind:value={authorName}
+															placeholder="Enter your name"
+															class="w-full px-3 py-1.5 text-sm text-gray-900 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+															required
+														/>
+													</div>
 												{/if}
 												
 												<div class="flex gap-2">
@@ -308,11 +314,15 @@
 		<!-- Name input for anonymous users -->
 		{#if !user}
 			<div class="mb-3">
+				<label for="comment-author-name" class="block text-xs font-medium text-gray-600 mb-1.5">
+					Your Name <span class="text-red-500">*</span>
+				</label>
 				<input
+					id="comment-author-name"
 					type="text"
 					bind:value={authorName}
-					placeholder="Your name *"
-					class="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:border-gray-400 transition-colors"
+					placeholder="Enter your name"
+					class="w-full px-3 py-2 text-sm text-gray-900 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
 					required
 				/>
 			</div>
