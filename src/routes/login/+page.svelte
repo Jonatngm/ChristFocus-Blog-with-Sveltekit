@@ -7,11 +7,10 @@
 	import { toast } from 'svelte-sonner';
 
 	let loading = false;
-	let step: 'login' | 'register' | 'otp' = 'login';
+	let step: 'login' | 'register' = 'login';
 	
 	let email = '';
 	let password = '';
-	let otp = '';
 	let username = '';
 
 	async function handleLogin(e: Event) {
@@ -32,31 +31,22 @@
 		}
 	}
 
-	async function handleSendOtp(e: Event) {
-		e.preventDefault();
-		loading = true;
-
-		try {
-			await authService.sendOtp(email);
-			toast.success('Verification code sent to your email');
-			step = 'otp';
-		} catch (error: any) {
-			toast.error(error.message || 'Failed to send verification code');
-		} finally {
-			loading = false;
-		}
-	}
-
 	async function handleRegister(e: Event) {
 		e.preventDefault();
 		loading = true;
 
 		try {
-			const user = await authService.verifyOtpAndSetPassword(email, otp, password, username);
-			authStore.login(authService.mapUser(user));
-			goto('/admin');
+			const user = await authService.signUp(email, password, username);
+			if (user) {
+				authStore.login(authService.mapUser(user));
+				toast.success('Account created successfully!');
+				goto('/admin');
+			} else {
+				toast.info('Please check your email to confirm your account');
+			}
 		} catch (error: any) {
 			toast.error(error.message || 'Registration failed');
+		} finally {
 			loading = false;
 		}
 	}
@@ -76,7 +66,7 @@
 			</div>
 			<h1 class="text-3xl sm:text-4xl font-extrabold text-black tracking-tight">Admin Access</h1>
 			<p class="text-sm sm:text-base text-gray-600 font-medium px-2">
-				{step === 'login' ? 'Sign in to manage content' : step === 'register' ? 'Create your account' : 'Enter verification code'}
+				{step === 'login' ? 'Sign in to manage content' : 'Create your account'}
 			</p>
 		</div>
 		
@@ -121,33 +111,6 @@
 					</div>
 				</form>
 			{:else if step === 'register'}
-				<form on:submit={handleSendOtp} class="space-y-5 sm:space-y-7">
-					<div class="space-y-2 sm:space-y-3">
-						<label for="reg-email" class="text-xs sm:text-sm font-bold text-black uppercase tracking-wide">Email</label>
-						<input
-							id="reg-email"
-							type="email"
-							bind:value={email}
-							required
-							class="w-full px-4 sm:px-5 py-3 sm:py-4 border-2 border-gray-200 rounded-xl bg-white text-black placeholder:text-gray-400 focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all duration-300 outline-none disabled:opacity-50 disabled:cursor-not-allowed hover:border-gray-300 text-base sm:text-lg"
-							placeholder="your@email.com"
-							disabled={loading}
-						/>
-					</div>
-					<Button type="submit" class="w-full bg-gradient-to-r from-primary to-gold-dark hover:from-gold-dark hover:to-primary text-black font-bold py-3 sm:py-4 rounded-xl transition-all duration-300 interactive elevated text-base sm:text-lg" disabled={loading}>
-						{loading ? 'Sending code...' : 'Send Verification Code'}
-					</Button>
-					<div class="text-center text-sm">
-						<button
-							type="button"
-							on:click={() => step = 'login'}
-							class="text-primary hover:text-gold-dark font-semibold transition-colors"
-						>
-							Back to login
-						</button>
-					</div>
-				</form>
-			{:else}
 				<form on:submit={handleRegister} class="space-y-5 sm:space-y-6">
 					<div class="space-y-2 sm:space-y-3">
 						<label for="username" class="text-xs sm:text-sm font-bold text-black uppercase tracking-wide">Username</label>
@@ -162,14 +125,14 @@
 						/>
 					</div>
 					<div class="space-y-2 sm:space-y-3">
-						<label for="otp-code" class="text-xs sm:text-sm font-bold text-black uppercase tracking-wide">Verification Code</label>
+						<label for="reg-email" class="text-xs sm:text-sm font-bold text-black uppercase tracking-wide">Email</label>
 						<input
-							id="otp-code"
-							type="text"
-							bind:value={otp}
+							id="reg-email"
+							type="email"
+							bind:value={email}
 							required
 							class="w-full px-4 sm:px-5 py-3 sm:py-4 border-2 border-gray-200 rounded-xl bg-white text-black placeholder:text-gray-400 focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all duration-300 outline-none disabled:opacity-50 disabled:cursor-not-allowed hover:border-gray-300 text-base sm:text-lg"
-							placeholder="123456"
+							placeholder="your@email.com"
 							disabled={loading}
 						/>
 					</div>
@@ -180,14 +143,24 @@
 							type="password"
 							bind:value={password}
 							required
+							minlength="6"
 							class="w-full px-4 sm:px-5 py-3 sm:py-4 border-2 border-gray-200 rounded-xl bg-white text-black placeholder:text-gray-400 focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all duration-300 outline-none disabled:opacity-50 disabled:cursor-not-allowed hover:border-gray-300 text-base sm:text-lg"
 							placeholder="••••••••"
 							disabled={loading}
 						/>
 					</div>
 					<Button type="submit" class="w-full bg-gradient-to-r from-primary to-gold-dark hover:from-gold-dark hover:to-primary text-black font-bold py-3 sm:py-4 rounded-xl transition-all duration-300 interactive elevated text-base sm:text-lg" disabled={loading}>
-						{loading ? 'Creating account...' : 'Complete Registration'}
+						{loading ? 'Creating account...' : 'Create Account'}
 					</Button>
+					<div class="text-center text-sm">
+						<button
+							type="button"
+							on:click={() => step = 'login'}
+							class="text-primary hover:text-gold-dark font-semibold transition-colors"
+						>
+							Back to login
+						</button>
+					</div>
 				</form>
 			{/if}
 		</div>

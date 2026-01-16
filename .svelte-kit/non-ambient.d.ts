@@ -46,6 +46,6 @@ declare module "$app/types" {
 		};
 		Pathname(): "/" | "/about" | "/about/" | "/admin" | "/admin/" | "/admin/edit" | "/admin/edit/" | `/admin/edit/${string}` & {} | `/admin/edit/${string}/` & {} | "/admin/write" | "/admin/write/" | "/contact" | "/contact/" | "/login" | "/login/" | "/post" | "/post/" | `/post/${string}` & {} | `/post/${string}/` & {};
 		ResolvedPathname(): `${"" | `/${string}`}${ReturnType<AppTypes['Pathname']>}`;
-		Asset(): "/CNAME" | "/favicon.ico" | "/placeholder.svg" | "/robots.txt" | string & {};
+		Asset(): "/favicon.ico" | "/placeholder.svg" | "/robots.txt" | string & {};
 	}
 }

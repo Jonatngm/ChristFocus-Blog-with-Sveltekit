@@ -18,34 +18,21 @@ class AuthService {
     return mapUser(user);
   }
 
-  async sendOtp(email: string) {
+  async signUp(email: string, password: string, username: string) {
     // Security: Only allow authorized emails to register
     if (!AUTHORIZED_EMAILS.includes(email.toLowerCase())) {
       throw new Error('This email is not authorized to create an account');
     }
 
-    const { error } = await supabase.auth.signInWithOtp({
+    const { data, error } = await supabase.auth.signUp({
       email,
-      options: { shouldCreateUser: true },
-    });
-    if (error) throw error;
-  }
-
-  async verifyOtpAndSetPassword(email: string, token: string, password: string, username: string) {
-    const { data, error } = await supabase.auth.verifyOtp({
-      email,
-      token,
-      type: 'email',
-    });
-    if (error) throw error;
-
-    const { data: updateData, error: updateError } = await supabase.auth.updateUser({
       password,
-      data: { username },
+      options: {
+        data: { username }
+      }
     });
-    if (updateError) throw updateError;
-    
-    return updateData.user;
+    if (error) throw error;
+    return data.user;
   }
 
   async signInWithPassword(email: string, password: string) {
