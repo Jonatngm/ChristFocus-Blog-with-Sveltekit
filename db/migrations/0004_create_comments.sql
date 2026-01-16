@@ -46,6 +46,9 @@ CREATE POLICY "Anyone can delete own comments" ON comments
     FOR DELETE
     USING (user_id IS NULL);
 
+-- Drop existing function if it exists
+DROP FUNCTION IF EXISTS get_post_comments(UUID);
+
 -- Function to get comments with user info
 CREATE OR REPLACE FUNCTION get_post_comments(post_uuid UUID)
 RETURNS TABLE (
