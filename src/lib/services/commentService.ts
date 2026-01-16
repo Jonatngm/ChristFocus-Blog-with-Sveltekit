@@ -70,7 +70,8 @@ export const commentService = {
 				author_name: commentData.author_name,
 				author_email: commentData.author_email || null,
 				content: commentData.content,
-				session_id: commentData.session_id || null
+				session_id: commentData.session_id || null,
+				parent_id: commentData.parent_id || null
 			})
 			.select()
 			.single();
