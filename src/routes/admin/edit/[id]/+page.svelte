@@ -7,6 +7,7 @@
 	import { toast } from 'svelte-sonner';
 	import { onMount } from 'svelte';
 	import type { Category, Tag, Post } from '$lib/types';
+	import RichTextEditor from '$lib/components/RichTextEditor.svelte';
 
 	let title = '';
 	let content = '';
@@ -195,14 +196,7 @@
 					<!-- Content -->
 					<div class="space-y-2">
 						<label for="content" class="text-sm font-medium text-foreground">Content</label>
-						<textarea
-							id="content"
-							bind:value={content}
-							required
-							rows="15"
-							class="w-full px-4 py-3 border-2 border-input rounded-lg bg-background text-foreground placeholder:text-muted-foreground focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all outline-none resize-y"
-							placeholder="Write your teaching content here..."
-						></textarea>
+						<RichTextEditor bind:content placeholder="Write your teaching content here..." />
 					</div>
 
 					<!-- Excerpt -->
