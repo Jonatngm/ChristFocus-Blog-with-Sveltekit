@@ -6,6 +6,7 @@ CREATE TABLE IF NOT EXISTS comments (
     author_name TEXT NOT NULL,
     author_email TEXT,
     content TEXT NOT NULL,
+    session_id TEXT,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
@@ -23,6 +24,12 @@ BEGIN
     IF NOT EXISTS (SELECT 1 FROM information_schema.columns 
                    WHERE table_name = 'comments' AND column_name = 'author_email') THEN
         ALTER TABLE comments ADD COLUMN author_email TEXT;
+    END IF;
+    
+    -- Add session_id column if it doesn't exist
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns 
+                   WHERE table_name = 'comments' AND column_name = 'session_id') THEN
+        ALTER TABLE comments ADD COLUMN session_id TEXT;
     END IF;
     
     -- Make user_id nullable if it isn't already
@@ -49,6 +56,7 @@ DROP POLICY IF EXISTS "Users can delete own comments" ON comments;
 DROP POLICY IF EXISTS "Anyone can insert comments" ON comments;
 DROP POLICY IF EXISTS "Anyone can delete own comments" ON comments;
 DROP POLICY IF EXISTS "Authenticated users can delete own comments" ON comments;
+DROP POLICY IF EXISTS "Users can delete by session" ON comments;
 
 -- Policy: Anyone can view comments
 CREATE POLICY "Anyone can view comments" ON comments
@@ -65,10 +73,10 @@ CREATE POLICY "Authenticated users can delete own comments" ON comments
     FOR DELETE
     USING (auth.uid() = user_id);
 
--- Policy: Anyone can delete comments they created (using anonymous session)
-CREATE POLICY "Anyone can delete own comments" ON comments
+-- Policy: Anyone can delete comments with matching session (no auth required)
+CREATE POLICY "Users can delete by session" ON comments
     FOR DELETE
-    USING (user_id IS NULL);
+    USING (true);
 
 -- Drop existing function if it exists
 DROP FUNCTION IF EXISTS get_post_comments(UUID);
@@ -82,6 +90,7 @@ RETURNS TABLE (
     author_name TEXT,
     author_email TEXT,
     content TEXT,
+    session_id TEXT,
     created_at TIMESTAMP WITH TIME ZONE,
     updated_at TIMESTAMP WITH TIME ZONE
 ) 
@@ -97,6 +106,7 @@ BEGIN
         c.author_name,
         c.author_email,
         c.content,
+        c.session_id,
         c.created_at,
         c.updated_at
     FROM comments c

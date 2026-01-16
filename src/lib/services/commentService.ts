@@ -7,6 +7,7 @@ export interface Comment {
 	author_name: string;
 	author_email?: string | null;
 	content: string;
+	session_id?: string | null;
 	created_at: string;
 	updated_at: string;
 }
@@ -16,6 +17,7 @@ export interface CreateCommentData {
 	author_name: string;
 	author_email?: string;
 	content: string;
+	session_id?: string;
 }
 
 export const commentService = {
@@ -64,7 +66,8 @@ export const commentService = {
 				user_id: userId || null,
 				author_name: commentData.author_name,
 				author_email: commentData.author_email || null,
-				content: commentData.content
+				content: commentData.content,
+				session_id: commentData.session_id || null
 			})
 			.select()
 			.single();

@@ -18,9 +18,35 @@
 	let commentAuthorEmail = '';
 	let submittingComment = false;
 	let loadingComments = false;
+	let commentSessionId = '';
 
 	$: postId = $page.params.id;
 	$: user = $authStore.user;
+
+	// Generate or retrieve comment session ID for anonymous users
+	function getCommentSessionId(): string {
+		if (!browser) return '';
+		
+		let sessionId = localStorage.getItem('commentSessionId');
+		if (!sessionId) {
+			sessionId = 'session_' + Date.now() + '_' + Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+			localStorage.setItem('commentSessionId', sessionId);
+		}
+		return sessionId;
+	}
+
+	// Check if current user can delete a comment
+	function canDeleteComment(comment: Comment): boolean {
+		// Authenticated users can delete their own comments
+		if (user && comment.user_id === user.id) {
+			return true;
+		}
+		// Anonymous users can delete comments with matching session_id
+		if (comment.session_id && comment.session_id === commentSessionId) {
+			return true;
+		}
+		return false;
+	}
 
 	// Auto-fill name and email if user is logged in
 	$: if (user?.email) {
@@ -64,6 +90,11 @@
 
 			// Load comments
 			await loadComments();
+			
+			// Get comment session ID for anonymous users
+			if (browser) {
+				commentSessionId = getCommentSessionId();
+			}
 		} catch (error) {
 			console.error('Error loading post:', error);
 		} finally {
@@ -103,7 +134,8 @@
 				post_id: postId,
 				author_name: commentAuthorName.trim(),
 				author_email: commentAuthorEmail.trim() || undefined,
-				content: commentContent.trim()
+				content: commentContent.trim(),
+				session_id: user ? undefined : commentSessionId
 			}, user?.id);
 
 			toast.success('Comment posted successfully!');
@@ -312,7 +344,7 @@
 										</span>
 									</div>
 								</div>
-								{#if user && user.id === comment.user_id}
+								{#if canDeleteComment(comment)}
 									<button
 										on:click={() => handleDeleteComment(comment.id)}
 										class="text-red-600 hover:text-red-800 p-2 rounded-lg hover:bg-red-50 transition-colors"
