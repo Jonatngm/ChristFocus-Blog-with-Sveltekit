@@ -72,7 +72,7 @@
 					<img
 						src={post.cover_image}
 						alt={post.title}
-						class="w-full h-64 sm:h-80 md:h-96 object-cover rounded-xl mb-6 sm:mb-8 shadow-lg"
+						class="w-full h-64 sm:h-80 md:h-96 object-contain rounded-xl mb-6 sm:mb-8 shadow-lg bg-gray-100"
 					/>
 				{/if}
 
