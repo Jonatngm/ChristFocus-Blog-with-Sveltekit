@@ -111,18 +111,14 @@
 		}
 
 		// Cleanup: Cancel view count if user leaves before 5 seconds
-		// This must be a separate return statement, not inside the async function
-	});
-
-	// Cleanup when component unmounts
-	$: if (browser) {
 		return () => {
 			if (viewTimeout) {
 				clearTimeout(viewTimeout);
 				console.log('View count cancelled - user left before 5 seconds');
+				viewTimeout = null;
 			}
 		};
-	}
+	});
 
 	function checkAndIncrementView() {
 		// Get current user state
