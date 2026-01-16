@@ -95,38 +95,42 @@
 		return anonId;
 	}
 
-	onMount(async () => {
-		try {
-			post = await postService.getPostById(postId);
-			
-			// Wait for auth to initialize before checking user state
-			// This prevents incrementing views before we know if user is logged in
-			if (authLoading) {
-				console.log('Waiting for auth to load...');
-				// Wait for auth to finish loading
-				const unsubscribe = authStore.subscribe(state => {
-					if (!state.loading) {
-						unsubscribe();
-						checkAndIncrementView();
-					}
-				});
-			} else {
-				checkAndIncrementView();
-			}
+	onMount(() => {
+		const init = async () => {
+			try {
+				post = await postService.getPostById(postId);
+				
+				// Wait for auth to initialize before checking user state
+				// This prevents incrementing views before we know if user is logged in
+				if (authLoading) {
+					console.log('Waiting for auth to load...');
+					// Wait for auth to finish loading
+					const unsubscribe = authStore.subscribe(state => {
+						if (!state.loading) {
+							unsubscribe();
+							checkAndIncrementView();
+						}
+					});
+				} else {
+					checkAndIncrementView();
+				}
 
-			// Load comments
-			await loadComments();
-			
-			// Get comment session ID for anonymous users
-			if (browser) {
-				commentSessionId = getCommentSessionId();
+				// Load comments
+				await loadComments();
+				
+				// Get comment session ID for anonymous users
+				if (browser) {
+					commentSessionId = getCommentSessionId();
+				}
+			} catch (error) {
+				console.error('Error loading post:', error);
+			} finally {
+				loading = false;
 			}
-		} catch (error) {
-			console.error('Error loading post:', error);
-		} finally {
-			loading = false;
-		}
-
+		};
+		
+		init();
+		
 		// Cleanup: Cancel view count if user leaves before 5 seconds
 		return () => {
 			if (viewTimeout) {
