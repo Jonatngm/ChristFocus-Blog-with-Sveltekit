@@ -8,6 +8,7 @@ export interface Comment {
 	author_email?: string | null;
 	content: string;
 	session_id?: string | null;
+	parent_id?: string | null;
 	created_at: string;
 	updated_at: string;
 }
@@ -18,6 +19,7 @@ export interface CreateCommentData {
 	author_email?: string;
 	content: string;
 	session_id?: string;
+	parent_id?: string | null;
 }
 
 export const commentService = {

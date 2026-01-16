@@ -5,18 +5,14 @@
 	import { authStore } from '$lib/stores/authStore';
 	import { onMount } from 'svelte';
 	import type { Post } from '$lib/types';
-	import { ArrowLeft, Calendar, Eye, Trash2 } from 'lucide-svelte';
+	import { ArrowLeft, Calendar, Eye } from 'lucide-svelte';
 	import { browser } from '$app/environment';
 	import { toast } from 'svelte-sonner';
-	import { Button } from '$lib/components/ui/button';
+	import InstagramComments from '$lib/components/InstagramComments.svelte';
 
 	let post: Post | null = null;
 	let loading = true;
 	let comments: Comment[] = [];
-	let commentContent = '';
-	let commentAuthorName = '';
-	let commentAuthorEmail = '';
-	let submittingComment = false;
 	let loadingComments = false;
 	let commentSessionId = '';
 	let viewTimeout: ReturnType<typeof setTimeout> | null = null;
@@ -24,6 +20,7 @@
 	$: postId = $page.params.id;
 	$: user = $authStore.user;
 	$: authLoading = $authStore.loading;
+	$: currentUserEmail = user?.email || null;
 
 	// Generate or retrieve comment session ID for anonymous users
 	function getCommentSessionId(): string {
@@ -50,17 +47,37 @@
 		return false;
 	}
 
-	// Auto-fill name and email if user is logged in
-	$: if (user?.email) {
-		commentAuthorName = user.email.split('@')[0];
-		commentAuthorEmail = user.email;
+	async function handleSubmitComment(content: string, name: string, email: string, parentId?: string | null) {
+		try {
+			const commentData = {
+				post_id: postId,
+				author_name: name,
+				author_email: email || undefined,
+				content,
+				session_id: user ? undefined : commentSessionId,
+				parent_id: parentId || null
+			};
+
+			await commentService.createComment(commentData);
+			await loadComments();
+			toast.success('Comment posted successfully!');
+		} catch (error) {
+			console.error('Error posting comment:', error);
+			toast.error('Failed to post comment. Please try again.');
+		}
 	}
 
-	// Extract display name from email
-	function getDisplayName(name: string | undefined): string {
-		if (!name) return 'Anonymous';
-		// Capitalize first letter
-		return name.charAt(0).toUpperCase() + name.slice(1);
+	async function handleDeleteComment(commentId: string) {
+		if (!confirm('Are you sure you want to delete this comment?')) return;
+		
+		try {
+			await commentService.deleteComment(commentId);
+			await loadComments();
+			toast.success('Comment deleted successfully');
+		} catch (error) {
+			console.error('Error deleting comment:', error);
+			toast.error('Failed to delete comment');
+		}
 	}
 
 	// Generate or retrieve anonymous ID for view tracking
@@ -170,57 +187,6 @@
 			loadingComments = false;
 		}
 	}
-
-	async function handleCommentSubmit(e: Event) {
-		e.preventDefault();
-
-		if (!commentAuthorName.trim()) {
-			toast.error('Please enter your name');
-			return;
-		}
-
-		if (!commentContent.trim()) {
-			toast.error('Comment cannot be empty');
-			return;
-		}
-
-		try {
-			submittingComment = true;
-			await commentService.createComment({
-				post_id: postId,
-				author_name: commentAuthorName.trim(),
-				author_email: commentAuthorEmail.trim() || undefined,
-				content: commentContent.trim(),
-				session_id: user ? undefined : commentSessionId
-			}, user?.id);
-
-			toast.success('Comment posted successfully!');
-			commentContent = '';
-			// Only clear name/email if user is not logged in
-			if (!user) {
-				commentAuthorName = '';
-				commentAuthorEmail = '';
-			}
-			await loadComments();
-		} catch (error: any) {
-			console.error('Error posting comment:', error);
-			toast.error(error.message || 'Failed to post comment');
-		} finally {
-			submittingComment = false;
-		}
-	}
-
-	async function handleDeleteComment(commentId: string) {
-		if (!confirm('Are you sure you want to delete this comment?')) {
-			return;
-		}
-
-		try {
-			await commentService.deleteComment(commentId);
-			toast.success('Comment deleted successfully');
-			await loadComments();
-		} catch (error: any) {
-			console.error('Error deleting comment:', error);
 			toast.error(error.message || 'Failed to delete comment');
 		}
 	}
@@ -309,114 +275,14 @@
 		<!-- Comments Section -->
 		<section class="mt-12 sm:mt-16 pt-8 sm:pt-12 border-t-2 border-gray-200">
 			<h2 class="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8 text-black">Comments</h2>
-
-			<!-- Comment Form -->
-			<form on:submit={handleCommentSubmit} class="mb-8 sm:mb-10">
-				<div class="bg-white p-4 sm:p-6 rounded-xl border-2 border-gray-200 shadow-lg">
-					<label class="text-sm font-bold text-black uppercase tracking-wide mb-4 block">
-						Leave a comment
-					</label>
-					
-					<!-- Name and Email fields -->
-					<div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
-						<div>
-							<label for="authorName" class="text-xs font-semibold text-gray-700 mb-1 block">
-								Name <span class="text-red-600">*</span>
-							</label>
-							<input
-								id="authorName"
-								type="text"
-								bind:value={commentAuthorName}
-								disabled={submittingComment}
-								required
-								class="w-full px-3 py-2 border-2 border-gray-200 rounded-lg bg-white text-black placeholder:text-gray-400 focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all outline-none text-sm"
-								placeholder="Your name"
-							/>
-						</div>
-						<div>
-							<label for="authorEmail" class="text-xs font-semibold text-gray-700 mb-1 block">
-								Email (optional)
-							</label>
-							<input
-								id="authorEmail"
-								type="email"
-								bind:value={commentAuthorEmail}
-								disabled={submittingComment}
-								class="w-full px-3 py-2 border-2 border-gray-200 rounded-lg bg-white text-black placeholder:text-gray-400 focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all outline-none text-sm"
-								placeholder="your@email.com"
-							/>
-						</div>
-					</div>
-
-					<!-- Comment textarea -->
-					<textarea
-						id="comment"
-						bind:value={commentContent}
-						disabled={submittingComment}
-						required
-						rows="4"
-						class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg bg-white text-black placeholder:text-gray-400 focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all outline-none resize-y text-sm sm:text-base mb-4"
-						placeholder="Share your thoughts..."
-					></textarea>
-					<div class="flex justify-end">
-						<Button
-							type="submit"
-							disabled={submittingComment || !commentContent.trim() || !commentAuthorName.trim()}
-							class="bg-gradient-to-r from-primary to-gold-dark hover:from-primary/90 hover:to-gold-dark/90"
-						>
-							{submittingComment ? 'Posting...' : 'Post Comment'}
-						</Button>
-					</div>
-				</div>
-			</form>
-
-			<!-- Comments List -->
-			{#if loadingComments}
-				<div class="flex items-center justify-center py-8">
-					<div class="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
-				</div>
-			{:else if comments.length === 0}
-				<div class="text-center py-8 text-gray-500">
-					<p class="text-base sm:text-lg">No comments yet. Be the first to share your thoughts!</p>
-				</div>
-			{:else}
-				<div class="space-y-6">
-					{#each comments as comment}
-						<div class="bg-white p-4 sm:p-6 rounded-xl border-2 border-gray-200 shadow-sm">
-							<div class="flex items-start justify-between mb-3">
-								<div class="flex-1">
-									<div class="flex items-center gap-2 mb-1">
-										<span class="font-bold text-black text-sm sm:text-base">
-											{getDisplayName(comment.author_name)}
-										</span>
-										<span class="text-xs sm:text-sm text-gray-500">
-											{new Date(comment.created_at).toLocaleDateString('en-US', {
-												year: 'numeric',
-												month: 'short',
-												day: 'numeric',
-												hour: '2-digit',
-												minute: '2-digit'
-											})}
-										</span>
-									</div>
-								</div>
-								{#if canDeleteComment(comment)}
-									<button
-										on:click={() => handleDeleteComment(comment.id)}
-										class="text-red-600 hover:text-red-800 p-2 rounded-lg hover:bg-red-50 transition-colors"
-										title="Delete comment"
-									>
-										<Trash2 class="w-4 h-4" />
-									</button>
-								{/if}
-							</div>
-							<p class="text-gray-700 text-sm sm:text-base leading-relaxed whitespace-pre-wrap">
-								{comment.content}
-							</p>
-						</div>
-					{/each}
-				</div>
-			{/if}
+			
+			<InstagramComments
+				{comments}
+				onSubmitComment={handleSubmitComment}
+				onDeleteComment={handleDeleteComment}
+				canDelete={canDeleteComment}
+				{currentUserEmail}
+			/>
 		</section>
 	</article>
 	{:else}
