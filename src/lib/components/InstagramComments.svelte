@@ -17,12 +17,10 @@
 	let likedComments: Set<string> = new Set();
 	let submitting = false;
 	let authorName = '';
-	let authorEmail = '';
 	
 	$: user = $authStore.user;
 	$: if (user?.email) {
 		authorName = user.email.split('@')[0];
-		authorEmail = user.email;
 	}
 	
 	// Group comments by parent
@@ -79,7 +77,7 @@
 		if (!newComment.trim() || !authorName.trim() || submitting) return;
 		submitting = true;
 		try {
-			await onSubmitComment(newComment, authorName, authorEmail, null);
+			await onSubmitComment(newComment, authorName, '', null);
 			newComment = '';
 		} finally {
 			submitting = false;
@@ -90,7 +88,7 @@
 		if (!replyContent.trim() || !authorName.trim() || submitting) return;
 		submitting = true;
 		try {
-			await onSubmitComment(replyContent, authorName, authorEmail, parentId);
+			await onSubmitComment(replyContent, authorName, '', parentId);
 			replyContent = '';
 			replyTo = null;
 		} finally {
@@ -186,23 +184,15 @@
 										<!-- Reply Input -->
 										{#if replyTo === comment.id}
 											<div class="mt-3 space-y-2">
-												<!-- Name/Email for anonymous users -->
+												<!-- Name for anonymous users -->
 												{#if !user}
-													<div class="grid grid-cols-1 md:grid-cols-2 gap-2">
-														<input
-															type="text"
-															bind:value={authorName}
-															placeholder="Your name *"
-															class="px-3 py-1.5 text-sm border border-gray-200 rounded-lg focus:outline-none focus:border-gray-400 transition-colors"
-															required
-														/>
-														<input
-															type="email"
-															bind:value={authorEmail}
-															placeholder="Email (optional)"
-															class="px-3 py-1.5 text-sm border border-gray-200 rounded-lg focus:outline-none focus:border-gray-400 transition-colors"
-														/>
-													</div>
+													<input
+														type="text"
+														bind:value={authorName}
+														placeholder="Your name *"
+														class="w-full px-3 py-1.5 text-sm border border-gray-200 rounded-lg focus:outline-none focus:border-gray-400 transition-colors"
+														required
+													/>
 												{/if}
 												
 												<div class="flex gap-2">
@@ -315,21 +305,15 @@
 	
 	<!-- Fixed Comment Input -->
 	<div class="comment-input-container border-t border-gray-200 bg-white px-4 py-3">
-		<!-- Name/Email inputs for anonymous users -->
+		<!-- Name input for anonymous users -->
 		{#if !user}
-			<div class="mb-3 grid grid-cols-1 md:grid-cols-2 gap-2">
+			<div class="mb-3">
 				<input
 					type="text"
 					bind:value={authorName}
 					placeholder="Your name *"
-					class="px-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:border-gray-400 transition-colors"
+					class="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:border-gray-400 transition-colors"
 					required
-				/>
-				<input
-					type="email"
-					bind:value={authorEmail}
-					placeholder="Email (optional)"
-					class="px-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:border-gray-400 transition-colors"
 				/>
 			</div>
 		{/if}
