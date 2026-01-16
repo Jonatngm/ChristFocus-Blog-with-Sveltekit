@@ -20,6 +20,10 @@
 	let submitting = false;
 	let authorName = '';
 	
+	// Track how many replies to show per comment (default 2)
+	let visibleRepliesCount: Record<string, number> = {};
+	const DEFAULT_VISIBLE_REPLIES = 2;
+	
 	$: user = $authStore.user;
 	$: if (user?.email) {
 		authorName = user.email.split('@')[0];
@@ -110,6 +114,24 @@
 			expandedReplies.add(commentId);
 		}
 		expandedReplies = expandedReplies;
+	}
+	
+	function showMoreReplies(commentId: string) {
+		const currentReplies = commentReplies[commentId] || [];
+		visibleRepliesCount[commentId] = currentReplies.length;
+		visibleRepliesCount = visibleRepliesCount; // Trigger reactivity
+	}
+	
+	function getVisibleReplies(commentId: string): Comment[] {
+		const replies = commentReplies[commentId] || [];
+		const visibleCount = visibleRepliesCount[commentId] || DEFAULT_VISIBLE_REPLIES;
+		return replies.slice(0, visibleCount);
+	}
+	
+	function hasMoreReplies(commentId: string): boolean {
+		const replies = commentReplies[commentId] || [];
+		const visibleCount = visibleRepliesCount[commentId] || DEFAULT_VISIBLE_REPLIES;
+		return replies.length > visibleCount;
 	}
 	
 	async function handleSubmit() {
@@ -207,22 +229,6 @@
 											{/if}
 										</div>
 										
-										<!-- View Replies Toggle -->
-										{#if commentReplies[comment.id]?.length > 0}
-											<button
-												on:click={() => toggleReplies(comment.id)}
-												class="flex items-center gap-1 mt-3 text-xs font-semibold text-gray-500 hover:text-gray-700 transition-colors"
-											>
-												{#if expandedReplies.has(comment.id)}
-													<ChevronUp class="w-3 h-3" />
-													Hide replies ({commentReplies[comment.id].length})
-												{:else}
-													<ChevronDown class="w-3 h-3" />
-													View replies ({commentReplies[comment.id].length})
-												{/if}
-											</button>
-										{/if}
-										
 										<!-- Reply Input -->
 										{#if replyTo === comment.id}
 											<div class="mt-3 space-y-2">
@@ -284,14 +290,14 @@
 							</div>
 						</div>
 						
-						<!-- Nested Replies -->
-						{#if expandedReplies.has(comment.id) && commentReplies[comment.id]}
-							<div class="ml-11 mt-3 space-y-3 border-l-2 border-gray-100 pl-4">
-								{#each commentReplies[comment.id] as reply}
-									<div class="flex gap-3">
-										<!-- Reply Avatar -->
+						<!-- Nested Replies - Always show first 2 -->
+						{#if commentReplies[comment.id] && commentReplies[comment.id].length > 0}
+							<div class="ml-11 mt-3 space-y-3">
+								{#each getVisibleReplies(comment.id) as reply}
+									<div class="flex gap-2.5">
+										<!-- Reply Avatar - Smaller -->
 										<div class="flex-shrink-0">
-											<div class="w-6 h-6 rounded-full bg-gradient-to-br from-gray-400 to-gray-500 flex items-center justify-center text-white font-bold text-xs">
+											<div class="w-6 h-6 rounded-full bg-gradient-to-br from-gray-400 to-gray-500 flex items-center justify-center text-white font-bold text-[10px]">
 												{getInitials(reply.author_name || 'Anonymous')}
 											</div>
 										</div>
@@ -301,16 +307,16 @@
 											<div class="flex items-start justify-between gap-2">
 												<div class="flex-1">
 													<div class="inline">
-														<span class="font-semibold text-sm text-black mr-2">
+														<span class="font-semibold text-xs text-black mr-1.5">
 															{reply.author_name || 'Anonymous'}
 														</span>
-														<span class="text-sm text-gray-800 break-words">
+														<span class="text-xs text-gray-800 break-words">
 															{reply.content}
 														</span>
 													</div>
 													
-													<!-- Reply Actions -->
-													<div class="flex items-center gap-4 mt-1.5 text-xs text-gray-500">
+													<!-- Reply Actions - Smaller -->
+													<div class="flex items-center gap-3 mt-1 text-[11px] text-gray-500">
 														<span>{getRelativeTime(reply.created_at)}</span>
 														{#if (reply.likes_count || 0) > 0}
 															<span class="font-semibold">{reply.likes_count} {reply.likes_count === 1 ? 'like' : 'likes'}</span>
@@ -332,20 +338,31 @@
 													</div>
 												</div>
 												
-												<!-- Reply Like Icon -->
+												<!-- Reply Like Icon - Smaller -->
 												<button
 													on:click={() => toggleLike(reply.id)}
-													class="flex-shrink-0 p-1 hover:opacity-70 transition-opacity"
+													class="flex-shrink-0 p-0.5 hover:opacity-70 transition-opacity"
 													aria-label="Like reply"
 												>
 													<Heart
-														class="w-3 h-3 {likedComments.has(reply.id) ? 'fill-red-500 text-red-500' : 'text-gray-400'}"
+														class="w-2.5 h-2.5 {likedComments.has(reply.id) ? 'fill-red-500 text-red-500' : 'text-gray-400'}"
 													/>
 												</button>
 											</div>
 										</div>
 									</div>
 								{/each}
+								
+								<!-- View More Replies Button -->
+								{#if hasMoreReplies(comment.id)}
+									<button
+										on:click={() => showMoreReplies(comment.id)}
+										class="text-xs font-semibold text-gray-500 hover:text-gray-700 transition-colors flex items-center gap-1"
+									>
+										<span class="w-8 h-px bg-gray-300"></span>
+										View more replies ({commentReplies[comment.id].length - (visibleRepliesCount[comment.id] || DEFAULT_VISIBLE_REPLIES)})
+									</button>
+								{/if}
 							</div>
 						{/if}
 					</div>
