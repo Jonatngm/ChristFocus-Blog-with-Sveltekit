@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { postService } from '$lib/services/postService';
+	import { authStore } from '$lib/stores/authStore';
 	import { onMount } from 'svelte';
 	import type { Post } from '$lib/types';
 	import { ArrowLeft, Calendar, Eye } from 'lucide-svelte';
@@ -10,6 +11,7 @@
 	let loading = true;
 
 	$: postId = $page.params.id;
+	$: user = $authStore.user;
 
 	// Generate or retrieve anonymous ID for view tracking
 	function getAnonId(): string {
@@ -27,8 +29,8 @@
 		try {
 			post = await postService.getPostById(postId);
 			
-			// Increment views with anonymous ID and update post with new count
-			if (browser) {
+			// Only increment views for non-authenticated users (admins are authenticated)
+			if (browser && !user) {
 				const anonId = getAnonId();
 				const updatedPost = await postService.incrementViews(postId, { anonId });
 				
