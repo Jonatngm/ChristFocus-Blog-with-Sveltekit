@@ -3,7 +3,8 @@
 	import { postService } from '$lib/services/postService';
 	import { commentService, type Comment } from '$lib/services/commentService';
 	import { authStore } from '$lib/stores/authStore';
-	import { onMount } from 'svelte';
+	import { onMount, onDestroy } from 'svelte';
+	import { fade } from 'svelte/transition';
 	import type { Post } from '$lib/types';
 	import { ArrowLeft, Calendar, Eye } from 'lucide-svelte';
 	import { browser } from '$app/environment';
@@ -16,6 +17,9 @@
 	let loadingComments = false;
 	let commentSessionId = '';
 	let viewTimeout: ReturnType<typeof setTimeout> | null = null;
+	let currentImageIndex = 0;
+	let carouselIntervalId: ReturnType<typeof setInterval> | null = null;
+	const carouselTransitionDuration = 5000; // 5 seconds per image
 
 	$: postId = $page.params.id;
 	$: user = $authStore.user;
@@ -200,6 +204,35 @@
 		if (count >= 1000) return (count / 1000).toFixed(1) + 'k';
 		return count.toString();
 	}
+
+	// Preload next image for smooth carousel transition
+	$: if (typeof window !== 'undefined' && post?.cover_images && post.cover_images.length > 1) {
+		const nextIndex = (currentImageIndex + 1) % post.cover_images.length;
+		const img = new Image();
+		img.src = post.cover_images[nextIndex];
+	}
+
+	// Get cover images array (use cover_images if available, otherwise fallback to single cover_image)
+	$: coverImages = post?.cover_images && post.cover_images.length > 0 
+		? post.cover_images 
+		: post?.cover_image ? [post.cover_image] : [];
+
+	// Start carousel when post loads
+	$: if (post?.cover_images && post.cover_images.length > 1 && !carouselIntervalId) {
+		carouselIntervalId = setInterval(() => {
+			currentImageIndex = (currentImageIndex + 1) % post!.cover_images!.length;
+		}, carouselTransitionDuration);
+	}
+
+	onDestroy(() => {
+		if (viewTimeout) {
+			clearTimeout(viewTimeout);
+		}
+		if (carouselIntervalId) {
+			clearInterval(carouselIntervalId);
+			carouselIntervalId = null;
+		}
+	});
 </script>
 
 <svelte:head>
