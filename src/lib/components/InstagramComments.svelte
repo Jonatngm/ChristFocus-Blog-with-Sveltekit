@@ -60,6 +60,14 @@
 		return acc;
 	}, {} as Record<string, Comment[]>);
 	
+	// Debug logging
+	$: if (comments.length > 0) {
+		console.log('Total comments:', comments.length);
+		console.log('Top-level comments:', topLevelComments.length);
+		console.log('Comment replies structure:', commentReplies);
+		console.log('All comments:', comments.map(c => ({ id: c.id, parent_id: c.parent_id, content: c.content.substring(0, 30) })));
+	}
+	
 	function getVisibleReplies(commentId: string): Comment[] {
 		const replies = commentReplies[commentId] || [];
 		if (showAllReplies[commentId]) {
