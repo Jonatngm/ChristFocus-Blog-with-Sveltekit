@@ -165,10 +165,14 @@ class PostService {
   async createPost(userId: string, postData: Partial<PostFormData>) {
     const { category_ids, tag_names, ...postFields } = postData;
 
+    // Generate slug from title
+    const slug = postData.title ? postData.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') : '';
+
     const { data, error } = await supabase
       .from('posts')
       .insert({
         author_id: userId,
+        slug,
         ...postFields,
       })
       .select()
