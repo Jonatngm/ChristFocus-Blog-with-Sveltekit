@@ -145,7 +145,7 @@ class PostService {
     const { data, error } = await supabase
       .from('posts')
       .insert({
-        user_id: userId,
+        author_id: userId,
         ...postFields,
       })
       .select()
@@ -312,10 +312,6 @@ class PostService {
   // Series methods
   async getSeries(userId?: string) {
     let query = supabase.from('series').select('*').order('created_at', { ascending: false });
-    
-    if (userId) {
-      query = query.eq('user_id', userId);
-    }
 
     const { data, error } = await query;
     if (error) throw error;
@@ -326,7 +322,7 @@ class PostService {
     const slug = title.toLowerCase().replace(/\s+/g, '-');
     const { data, error } = await supabase
       .from('series')
-      .insert({ user_id: userId, title, slug, description })
+      .insert({ title, slug, description })
       .select()
       .single();
 

@@ -10,11 +10,12 @@ CREATE TABLE IF NOT EXISTS public.posts (
   slug text UNIQUE NOT NULL,
   content text NOT NULL,
   excerpt text,
+  cover_image text,
   author_id uuid REFERENCES auth.users(id) ON DELETE SET NULL,
   featured boolean DEFAULT false,
   published boolean DEFAULT false,
   views integer DEFAULT 0,
-  scheduled_for timestamptz,
+  scheduled_at timestamptz,
   created_at timestamptz DEFAULT now(),
   updated_at timestamptz DEFAULT now()
 );
@@ -39,7 +40,7 @@ CREATE TABLE IF NOT EXISTS public.tags (
 -- Create series table
 CREATE TABLE IF NOT EXISTS public.series (
   id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-  name text UNIQUE NOT NULL,
+  title text UNIQUE NOT NULL,
   slug text UNIQUE NOT NULL,
   description text,
   created_at timestamptz DEFAULT now()
@@ -61,6 +62,7 @@ CREATE TABLE IF NOT EXISTS public.post_tags (
 
 -- Add series_id to posts
 ALTER TABLE public.posts ADD COLUMN IF NOT EXISTS series_id uuid REFERENCES series(id) ON DELETE SET NULL;
+ALTER TABLE public.posts ADD COLUMN IF NOT EXISTS series_order integer;
 
 -- Create indexes for better performance
 CREATE INDEX IF NOT EXISTS idx_posts_published ON posts(published);
