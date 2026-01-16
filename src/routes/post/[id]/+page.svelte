@@ -187,9 +187,6 @@
 			loadingComments = false;
 		}
 	}
-			toast.error(error.message || 'Failed to delete comment');
-		}
-	}
 
 	function formatCount(count: number | null | undefined): string {
 		if (!count) return '0';
