@@ -48,6 +48,7 @@ DROP POLICY IF EXISTS "Users can update own comments" ON comments;
 DROP POLICY IF EXISTS "Users can delete own comments" ON comments;
 DROP POLICY IF EXISTS "Anyone can insert comments" ON comments;
 DROP POLICY IF EXISTS "Anyone can delete own comments" ON comments;
+DROP POLICY IF EXISTS "Authenticated users can delete own comments" ON comments;
 
 -- Policy: Anyone can view comments
 CREATE POLICY "Anyone can view comments" ON comments
