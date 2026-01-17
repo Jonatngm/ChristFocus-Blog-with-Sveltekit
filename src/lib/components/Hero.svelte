@@ -63,7 +63,7 @@
 	<!-- Welcome text and description overlay -->
 	<div class="absolute inset-0 z-20 flex items-center justify-center px-4 sm:px-6 md:px-8">
 		<div class="text-center max-w-5xl mx-auto">
-			<!-- Main Title - Maximum visibility with enhanced shadows and background -->
+			<!-- Main Title - Maximum visibility with enhanced shadows -->
 			<h1 
 				class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-extrabold text-white tracking-tight leading-[1.1] mb-6 sm:mb-8 md:mb-10" 
 				style="
@@ -74,9 +74,6 @@
 						0 6px 20px rgba(0, 0, 0, 1),
 						0 3px 10px rgba(0, 0, 0, 0.9),
 						0 1px 5px rgba(0, 0, 0, 0.8);
-					background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.4) 0%, transparent 70%);
-					padding: 1rem 2rem;
-					border-radius: 1rem;
 					-webkit-font-smoothing: antialiased;
 					-moz-osx-font-smoothing: grayscale;
 				"
