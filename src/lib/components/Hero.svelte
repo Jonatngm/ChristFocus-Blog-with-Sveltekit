@@ -53,7 +53,7 @@
 					src={image}
 					alt="Christ Focus Hero"
 					class="w-full h-full object-cover"
-					style="filter: blur(4px); transform: scale(1.02);"
+					style="filter: blur(2px); transform: scale(1.01);"
 					loading={index === 0 ? 'eager' : 'lazy'}
 				/>
 			</div>
