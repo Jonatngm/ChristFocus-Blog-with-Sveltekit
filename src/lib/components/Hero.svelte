@@ -87,18 +87,7 @@
 		</div>
 	</div>
 
-	<!-- Slide indicators -->
-	<div class="absolute bottom-8 sm:bottom-12 left-1/2 -translate-x-1/2 flex gap-3 z-30">
-		{#each heroImages as _, index}
-			<button
-				on:click={() => currentIndex = index}
-				class="w-2.5 h-2.5 rounded-full transition-all duration-300 {index === currentIndex ? 'bg-primary w-8 scale-110' : 'bg-white/60 hover:bg-white/80'}"
-				aria-label="Go to slide {index + 1}"
-			></button>
-		{/each}
-	</div>
-</section>
-with iOS-style animation -->
+	<!-- Slide indicators with iOS-style animation -->
 	<div class="absolute bottom-6 sm:bottom-8 md:bottom-10 lg:bottom-12 left-1/2 -translate-x-1/2 flex gap-2 sm:gap-3 z-30 hero-indicators">
 		{#each heroImages as _, index}
 			<button
@@ -345,4 +334,4 @@ with iOS-style animation -->
 			transition: none;
 		}
 	}
-</style
+</style>
