@@ -11,7 +11,6 @@
 	let filteredPosts: Post[] = [];
 	let loading = true;
 	let searchQuery = '';
-	let showDescription = false;
 
 	onMount(async () => {
 		try {
@@ -27,11 +26,6 @@
 		} finally {
 			loading = false;
 		}
-
-		// Show description text after 5 seconds
-		setTimeout(() => {
-			showDescription = true;
-		}, 5000);
 	});
 
 	function filterPosts() {
@@ -57,21 +51,7 @@
 <div class="min-h-screen bg-white">
 	<Hero />
 
-	<div class="container mx-auto px-4 sm:px-6 py-8 sm:py-12 md:py-16 lg:py-20">
-		<!-- Description Text with fade-in animation -->
-		{#if showDescription}
-			<div 
-				class="mb-12 sm:mb-16 md:mb-20 text-center max-w-4xl mx-auto animate-fade-in"
-				style="animation: fadeIn 1.5s ease-in forwards;"
-			>
-				<div class="px-4 sm:px-6 md:px-8">
-					<p class="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-700 leading-relaxed font-normal">
-						ChristFocus is a Christ-centered space created to reveal the glory and presence of Jesus in every part of life. Here we proclaim the Gospel of Love, words that restore your soul, bring lasting peace, and give life a whole new depth and meaning. Through the wisdom and truth of Christ, you will find unwavering hope, victory over life's struggles, and the assurance of eternal triumph. Come, be encouraged, and let your heart be anchored in His love and light.
-					</p>
-				</div>
-			</div>
-		{/if}
-
+	<div class="container mx-auto px-4 sm:px-6 py-12 sm:py-16 md:py-20 lg:py-24">
 		<!-- Search Bar -->
 		<div class="mb-12 sm:mb-16 md:mb-20 max-w-2xl mx-auto px-2">
 			<div class="relative group">
@@ -141,15 +121,3 @@
 		{/if}
 	</div>
 </div>
-<style>
-	@keyframes fadeIn {
-		from {
-			opacity: 0;
-			transform: translateY(20px);
-		}
-		to {
-			opacity: 1;
-			transform: translateY(0);
-		}
-	}
-</style>
