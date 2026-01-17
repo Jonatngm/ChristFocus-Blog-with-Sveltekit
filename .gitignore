@@ -33,4 +33,5 @@ build
 !.env.example
 
 .vercel
+.vercel/output
 .env*.local
