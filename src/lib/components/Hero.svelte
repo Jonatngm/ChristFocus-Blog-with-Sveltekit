@@ -155,8 +155,15 @@
 		}
 	}
 
-	/* Title styling - clean without shadows */
+	/* Title styling with text shadows for visibility */
 	.hero-title {
+		text-shadow: 
+			0 0 25px rgba(0, 0, 0, 0.95),
+			0 0 45px rgba(0, 0, 0, 0.85),
+			0 0 65px rgba(0, 0, 0, 0.65),
+			0 5px 18px rgba(0, 0, 0, 0.95),
+			0 2px 8px rgba(0, 0, 0, 0.85),
+			0 1px 4px rgba(0, 0, 0, 0.75);
 		-webkit-font-smoothing: antialiased;
 		-moz-osx-font-smoothing: grayscale;
 	}
