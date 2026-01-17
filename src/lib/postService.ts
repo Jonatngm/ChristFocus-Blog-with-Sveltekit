@@ -1,5 +1,5 @@
 import { supabase } from './supabase';
-import { Post, PostFormData } from '@/types';
+import type { Post, PostFormData } from './types';
 
 class PostService {
   async getPublishedPosts(options?: {
@@ -99,7 +99,7 @@ class PostService {
 
     // Fallback: avoid counting duplicates on client; do best-effort increment
     const { data: current, error: selectError } = await supabase
-      .from<Post>('posts')
+      .from('posts')
       .select('views')
       .eq('id', id)
       .single();
@@ -109,7 +109,7 @@ class PostService {
     const newViews = (current.views || 0) + 1;
 
     const { data: updated, error: updateError } = await supabase
-      .from<Post>('posts')
+      .from('posts')
       .update({ views: newViews })
       .eq('id', id)
       .select()

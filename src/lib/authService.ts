@@ -1,6 +1,6 @@
 import { supabase } from './supabase';
-import { User } from '@supabase/supabase-js';
-import { AuthUser } from '@/types';
+import type { User } from '@supabase/supabase-js';
+import type { AuthUser } from './types';
 
 // Whitelist of authorized admin emails
 const AUTHORIZED_EMAILS = ['victor@truthhub.blog'];
