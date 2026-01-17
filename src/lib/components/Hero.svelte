@@ -63,24 +63,29 @@
 	<!-- Welcome text and description overlay -->
 	<div class="absolute inset-0 z-20 flex items-center justify-center px-4 sm:px-6 md:px-8">
 		<div class="text-center max-w-5xl mx-auto">
-			<!-- Main Title - Clean floating text with enhanced shadows -->
+			<!-- Main Title - Maximum visibility with enhanced shadows and background -->
 			<h1 
-				class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold text-white tracking-tight leading-[1.1] mb-6 sm:mb-8 md:mb-10" 
+				class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-extrabold text-white tracking-tight leading-[1.1] mb-6 sm:mb-8 md:mb-10" 
 				style="
 					text-shadow: 
-						0 0 20px rgba(0, 0, 0, 0.8),
-						0 0 40px rgba(0, 0, 0, 0.6),
-						0 4px 12px rgba(0, 0, 0, 0.9),
-						0 2px 6px rgba(0, 0, 0, 0.7);
+						0 0 30px rgba(0, 0, 0, 1),
+						0 0 50px rgba(0, 0, 0, 0.9),
+						0 0 70px rgba(0, 0, 0, 0.7),
+						0 6px 20px rgba(0, 0, 0, 1),
+						0 3px 10px rgba(0, 0, 0, 0.9),
+						0 1px 5px rgba(0, 0, 0, 0.8);
+					background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.4) 0%, transparent 70%);
+					padding: 1rem 2rem;
+					border-radius: 1rem;
 					-webkit-font-smoothing: antialiased;
 					-moz-osx-font-smoothing: grayscale;
 				"
 			>
 				Welcome to <span 
-					class="inline-block bg-gradient-to-r from-amber-200 via-yellow-200 to-amber-300 bg-clip-text text-transparent font-extrabold"
+					class="inline-block bg-gradient-to-r from-amber-100 via-yellow-100 to-amber-200 bg-clip-text text-transparent font-black"
 					style="
-						filter: drop-shadow(0 0 20px rgba(0, 0, 0, 0.9)) drop-shadow(0 4px 12px rgba(0, 0, 0, 0.8));
-						-webkit-text-stroke: 0.5px rgba(255, 255, 255, 0.3);
+						filter: drop-shadow(0 0 30px rgba(0, 0, 0, 1)) drop-shadow(0 0 50px rgba(0, 0, 0, 0.9)) drop-shadow(0 6px 20px rgba(0, 0, 0, 1));
+						-webkit-text-stroke: 1px rgba(255, 255, 255, 0.4);
 					"
 				>ChristFocus</span>
 			</h1>
@@ -90,15 +95,22 @@
 				<div 
 					class="max-w-3xl mx-auto"
 					in:fade={{ duration: 1500, delay: 0 }}
+					style="
+						background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.35) 0%, transparent 70%);
+						padding: 1.5rem 2rem;
+						border-radius: 1rem;
+					"
 				>
 					<p 
-						class="text-base sm:text-lg md:text-xl lg:text-2xl text-white leading-relaxed font-light tracking-wide" 
+						class="text-base sm:text-lg md:text-xl lg:text-2xl text-white leading-relaxed font-normal tracking-wide" 
 						style="
 							text-shadow: 
-								0 0 15px rgba(0, 0, 0, 0.9),
-								0 0 30px rgba(0, 0, 0, 0.7),
-								0 3px 10px rgba(0, 0, 0, 0.85),
-								0 1px 4px rgba(0, 0, 0, 0.7);
+								0 0 25px rgba(0, 0, 0, 1),
+								0 0 40px rgba(0, 0, 0, 0.9),
+								0 0 60px rgba(0, 0, 0, 0.7),
+								0 4px 15px rgba(0, 0, 0, 1),
+								0 2px 8px rgba(0, 0, 0, 0.9),
+								0 1px 4px rgba(0, 0, 0, 0.8);
 							-webkit-font-smoothing: antialiased;
 							-moz-osx-font-smoothing: grayscale;
 						"
