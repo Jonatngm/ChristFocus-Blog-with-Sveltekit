@@ -40,7 +40,7 @@ BEGIN
     WHERE comment_id = p_comment_id
         AND (
             (p_user_id IS NOT NULL AND user_id = p_user_id)
-            OR (p_session_id IS NOT NULL AND session_id = p_session_id)
+            OR (p_session_id IS NOT NULL AND session_id = p_session_id)P
         );
     
     IF v_existing_like IS NOT NULL THEN
