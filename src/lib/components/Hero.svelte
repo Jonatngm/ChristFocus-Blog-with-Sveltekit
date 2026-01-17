@@ -64,7 +64,11 @@
 		<div class="text-center max-w-6xl mx-auto w-full hero-content">
 			<!-- Main Title - Crisp and fluid -->
 			<h1 
-				class="hero-title text-3xl xs:text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-extrabold text-white tracking-tight leading-[1.05] mb-4 sm:mb-6 md:mb-8 lg:mb-10 px-2"
+				class="hero-title text-3xl xs:text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-extrabold tracking-tight leading-[1.05] mb-4 sm:mb-6 md:mb-8 lg:mb-10 px-2 select-text"
+				style="
+				  color: white;
+				  text-shadow: 0 2px 8px rgba(0,0,0,0.18), 0 1px 0 rgba(0,0,0,0.10);
+				"
 			>
 				Welcome to <span 
 					class="hero-brand inline-block bg-gradient-to-r from-amber-100 via-yellow-100 to-amber-200 bg-clip-text text-transparent font-black"
@@ -77,7 +81,12 @@
 					class="hero-description-wrapper max-w-4xl mx-auto px-2"
 					in:fade={{ duration: 1800, delay: 0, easing: (t) => t * (2 - t) }}
 				>
-					<p class="hero-description text-sm xs:text-base sm:text-lg md:text-xl lg:text-2xl text-white leading-relaxed font-light tracking-wide">
+					<p class="hero-description text-sm xs:text-base sm:text-lg md:text-xl lg:text-2xl leading-relaxed font-light tracking-wide select-text"
+					   style="
+						  color: white;
+						  text-shadow: 0 2px 8px rgba(0,0,0,0.18), 0 1px 0 rgba(0,0,0,0.10);
+					   "
+					>
 						ChristFocus is a Christ-centered space created to reveal the glory and presence of Jesus in every part of life. Here we proclaim the Gospel of Love, words that restore your soul, bring lasting peace, and give life a whole new depth and meaning. Through the wisdom and truth of Christ, you will find unwavering hope, victory over life's struggles, and the assurance of eternal triumph. Come, be encouraged, and let your heart be anchored in His love and light.
 					</p>
 				</div>
@@ -153,10 +162,11 @@
 		}
 	}
 
-	/* Title styling - crisp and clean without shadows */
+	/* Title styling - crisp, clean, and with subtle shadow for visibility */
 	.hero-title {
 		-webkit-font-smoothing: antialiased;
 		-moz-osx-font-smoothing: grayscale;
+		text-shadow: 0 2px 8px rgba(0,0,0,0.18), 0 1px 0 rgba(0,0,0,0.10);
 	}
 
 	/* Brand text - crisp gradient without shadows */
@@ -166,11 +176,12 @@
 
 
 
-	/* Description text styling - clean without shadows */
+	/* Description text styling - clean with subtle shadow for visibility */
 	.hero-description {
 		-webkit-font-smoothing: antialiased;
 		-moz-osx-font-smoothing: grayscale;
 		font-weight: 300;
+		text-shadow: 0 2px 8px rgba(0,0,0,0.18), 0 1px 0 rgba(0,0,0,0.10);
 	}
 
 	@media (min-width: 640px) {
