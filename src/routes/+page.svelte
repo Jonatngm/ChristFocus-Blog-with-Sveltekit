@@ -52,17 +52,6 @@
 	<Hero />
 
 	<div class="container mx-auto px-4 sm:px-6 py-12 sm:py-16 md:py-20 lg:py-32">
-		<!-- Welcome Text Section -->
-		<div class="mb-12 sm:mb-16 md:mb-20 text-center max-w-4xl mx-auto">
-			<h2 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-black mb-6 sm:mb-8 md:mb-10 tracking-tight leading-tight">
-				Welcome to <span class="text-primary text-shadow-soft">ChristFocus</span>
-			</h2>
-			<div class="h-1 w-16 sm:w-20 md:w-24 bg-gradient-to-r from-transparent via-primary to-transparent mx-auto mb-6 sm:mb-8 md:mb-10"></div>
-			<p class="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-800 leading-relaxed font-medium px-4">
-				ChristFocus is a Christ-centered space created to reveal the glory and presence of Jesus in every part of life. Here we proclaim the Gospel of Love, words that restore your soul, bring lasting peace, and give life a whole new depth and meaning. Through the wisdom and truth of Christ, you will find unwavering hope, victory over life's struggles, and the assurance of eternal triumph. Come, be encouraged, and let your heart be anchored in His love and light.
-			</p>
-		</div>
-
 		<!-- Search Bar -->
 		<div class="mb-12 sm:mb-16 md:mb-20 max-w-2xl mx-auto px-2">
 			<div class="relative group">
