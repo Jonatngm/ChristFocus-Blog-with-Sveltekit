@@ -71,17 +71,15 @@
 				>ChristFocus</span>
 			</h1>
 
-			<!-- Description text with fade-in and glassmorphism -->
+			<!-- Description text with fade-in - clean floating text -->
 			{#if showDescription}
 				<div 
 					class="hero-description-wrapper max-w-4xl mx-auto px-2"
 					in:fade={{ duration: 1800, delay: 0, easing: (t) => t * (2 - t) }}
 				>
-					<div class="hero-glass-card">
-						<p class="hero-description text-sm xs:text-base sm:text-lg md:text-xl lg:text-2xl text-white leading-relaxed font-light tracking-wide">
-							ChristFocus is a Christ-centered space created to reveal the glory and presence of Jesus in every part of life. Here we proclaim the Gospel of Love, words that restore your soul, bring lasting peace, and give life a whole new depth and meaning. Through the wisdom and truth of Christ, you will find unwavering hope, victory over life's struggles, and the assurance of eternal triumph. Come, be encouraged, and let your heart be anchored in His love and light.
-						</p>
-					</div>
+					<p class="hero-description text-sm xs:text-base sm:text-lg md:text-xl lg:text-2xl text-white leading-relaxed font-light tracking-wide">
+						ChristFocus is a Christ-centered space created to reveal the glory and presence of Jesus in every part of life. Here we proclaim the Gospel of Love, words that restore your soul, bring lasting peace, and give life a whole new depth and meaning. Through the wisdom and truth of Christ, you will find unwavering hope, victory over life's struggles, and the assurance of eternal triumph. Come, be encouraged, and let your heart be anchored in His love and light.
+					</p>
 				</div>
 			{/if}
 		</div>
@@ -155,113 +153,21 @@
 		}
 	}
 
-	/* Title styling with text shadows for visibility */
+	/* Title styling - crisp and clean without shadows */
 	.hero-title {
-		text-shadow: 
-			0 0 25px rgba(0, 0, 0, 0.95),
-			0 0 45px rgba(0, 0, 0, 0.85),
-			0 0 65px rgba(0, 0, 0, 0.65),
-			0 5px 18px rgba(0, 0, 0, 0.95),
-			0 2px 8px rgba(0, 0, 0, 0.85),
-			0 1px 4px rgba(0, 0, 0, 0.75);
 		-webkit-font-smoothing: antialiased;
 		-moz-osx-font-smoothing: grayscale;
 	}
 
-	/* Brand text with enhanced visibility */
+	/* Brand text - crisp gradient without shadows */
 	.hero-brand {
-		filter: 
-			drop-shadow(0 0 28px rgba(0, 0, 0, 0.95)) 
-			drop-shadow(0 0 48px rgba(0, 0, 0, 0.85)) 
-			drop-shadow(0 5px 18px rgba(0, 0, 0, 0.95));
-		-webkit-text-stroke: 1px rgba(255, 255, 255, 0.35);
-		animation: brand-shimmer 4s ease-in-out infinite;
+		-webkit-text-stroke: 0.5px rgba(255, 255, 255, 0.2);
 	}
 
-	@keyframes brand-shimmer {
-		0%, 100% {
-			filter: 
-				drop-shadow(0 0 28px rgba(0, 0, 0, 0.95)) 
-				drop-shadow(0 0 48px rgba(0, 0, 0, 0.85)) 
-				drop-shadow(0 5px 18px rgba(0, 0, 0, 0.95));
-		}
-		50% {
-			filter: 
-				drop-shadow(0 0 35px rgba(0, 0, 0, 1)) 
-				drop-shadow(0 0 58px rgba(0, 0, 0, 0.9)) 
-				drop-shadow(0 6px 22px rgba(0, 0, 0, 1));
-		}
-	}
 
-	/* iOS-style glassmorphism card */
-	.hero-glass-card {
-		background: radial-gradient(
-			ellipse at center, 
-			rgba(0, 0, 0, 0.35) 0%, 
-			rgba(0, 0, 0, 0.25) 50%,
-			transparent 75%
-		);
-		backdrop-filter: blur(10px) saturate(180%);
-		-webkit-backdrop-filter: blur(10px) saturate(180%);
-		padding: 1.25rem 1.5rem;
-		border-radius: 1.5rem;
-		border: 1px solid rgba(255, 255, 255, 0.08);
-		box-shadow: 
-			0 8px 32px rgba(0, 0, 0, 0.35),
-			inset 0 1px 0 rgba(255, 255, 255, 0.05);
-		transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-		animation: glass-entrance 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-	}
 
-	@media (min-width: 640px) {
-		.hero-glass-card {
-			padding: 1.75rem 2rem;
-			border-radius: 2rem;
-		}
-	}
-
-	@media (min-width: 1024px) {
-		.hero-glass-card {
-			padding: 2rem 2.5rem;
-			border-radius: 2.5rem;
-		}
-	}
-
-	@keyframes glass-entrance {
-		from {
-			opacity: 0;
-			transform: translateY(20px) scale(0.95);
-			backdrop-filter: blur(0px) saturate(100%);
-		}
-		to {
-			opacity: 1;
-			transform: translateY(0) scale(1);
-			backdrop-filter: blur(10px) saturate(180%);
-		}
-	}
-
-	.hero-glass-card:hover {
-		background: radial-gradient(
-			ellipse at center, 
-			rgba(0, 0, 0, 0.4) 0%, 
-			rgba(0, 0, 0, 0.3) 50%,
-			transparent 75%
-		);
-		border-color: rgba(255, 255, 255, 0.12);
-		box-shadow: 
-			0 12px 40px rgba(0, 0, 0, 0.4),
-			inset 0 1px 0 rgba(255, 255, 255, 0.08);
-	}
-
-	/* Description text styling */
+	/* Description text styling - clean without shadows */
 	.hero-description {
-		text-shadow: 
-			0 0 22px rgba(0, 0, 0, 0.95),
-			0 0 38px rgba(0, 0, 0, 0.85),
-			0 0 55px rgba(0, 0, 0, 0.65),
-			0 4px 14px rgba(0, 0, 0, 0.95),
-			0 2px 7px rgba(0, 0, 0, 0.85),
-			0 1px 3px rgba(0, 0, 0, 0.75);
 		-webkit-font-smoothing: antialiased;
 		-moz-osx-font-smoothing: grayscale;
 		font-weight: 300;
@@ -316,25 +222,17 @@
 		.hero-description {
 			line-height: 1.6;
 		}
-
-		.hero-glass-card {
-			backdrop-filter: blur(8px) saturate(150%);
-			-webkit-backdrop-filter: blur(8px) saturate(150%);
-		}
 	}
 
 	/* Reduce motion for users who prefer it */
 	@media (prefers-reduced-motion: reduce) {
 		.hero-image-container,
 		.hero-content,
-		.hero-brand,
-		.hero-glass-card,
 		.hero-indicators {
 			animation: none;
 		}
 
 		.hero-image,
-		.hero-glass-card,
 		.indicator-dot,
 		:global(button),
 		:global(a) {
