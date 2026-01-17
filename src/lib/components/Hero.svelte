@@ -166,35 +166,10 @@ with iOS-style animation -->
 		}
 	}
 
-	/* Title styling with enhanced shadows */
+	/* Title styling - clean without shadows */
 	.hero-title {
-		text-shadow: 
-			0 0 25px rgba(0, 0, 0, 0.95),
-			0 0 45px rgba(0, 0, 0, 0.85),
-			0 0 65px rgba(0, 0, 0, 0.65),
-			0 5px 18px rgba(0, 0, 0, 0.95),
-			0 2px 8px rgba(0, 0, 0, 0.85),
-			0 1px 4px rgba(0, 0, 0, 0.75);
 		-webkit-font-smoothing: antialiased;
 		-moz-osx-font-smoothing: grayscale;
-		animation: title-glow 3s ease-in-out infinite;
-	}
-
-	@keyframes title-glow {
-		0%, 100% {
-			text-shadow: 
-				0 0 25px rgba(0, 0, 0, 0.95),
-				0 0 45px rgba(0, 0, 0, 0.85),
-				0 0 65px rgba(0, 0, 0, 0.65),
-				0 5px 18px rgba(0, 0, 0, 0.95);
-		}
-		50% {
-			text-shadow: 
-				0 0 30px rgba(0, 0, 0, 1),
-				0 0 55px rgba(0, 0, 0, 0.9),
-				0 0 75px rgba(0, 0, 0, 0.7),
-				0 6px 22px rgba(0, 0, 0, 1);
-		}
 	}
 
 	/* Brand text with enhanced visibility */
@@ -356,7 +331,6 @@ with iOS-style animation -->
 	@media (prefers-reduced-motion: reduce) {
 		.hero-image-container,
 		.hero-content,
-		.hero-title,
 		.hero-brand,
 		.hero-glass-card,
 		.hero-indicators {
